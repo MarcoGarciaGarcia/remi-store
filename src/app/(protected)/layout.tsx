@@ -1,0 +1,40 @@
+import HeaderDashboard from "@/components/dashboard/header.dashboard";
+import { SidebarDesktop } from "@/components/sidebar-component";
+import { Divider } from "@nextui-org/react";
+
+interface ILayoutDashboardProps {
+  children: React.ReactNode;
+}
+const LayoutDashboard: React.FC<ILayoutDashboardProps> = ({ children }) => {
+  return (
+    <section className="bg-white">
+      <div></div>
+      <div className="block lg:ml-[0px]">
+      <SidebarDesktop />
+      <HeaderDashboard />{" "}
+        {/*Este componente es para pantallas md hacia arriba*/}
+        
+        <div className="pt-4 pb-16 px-3 !overflow-hidden lg:ml-28 md:ml-0 h-full ml-[200px]">
+          {children}
+        </div>
+        <footer className="py-12 px-8 bg-primary-500 grid mt-10">
+          <Divider className="bg-primary-500" />
+          <div className="pt-8">
+            <p className="text-white text-sm text-center">
+              &copy; 2024 Miscelanea REMI. Todos los derechos reservados.
+            </p>
+            <p className="text-white text-sm text-center mb-5">
+              Hecho por{" "}
+              <a
+                href="https://www.faces-consulting-it.com.mx/"
+                className="hover:border-b-2 hover:white"
+              ></a>
+            </p>
+          </div>
+          <Divider className="bg-primary-500" />
+        </footer>
+      </div>
+    </section>
+  );
+};
+export default LayoutDashboard;
