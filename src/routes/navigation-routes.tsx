@@ -55,6 +55,27 @@ export const mainNav: IRoute[] = [
     active: '/dashboard/sections/financial',
     href: '/dashboard/sections/financial',
     icon: Wallet
+  },
+  {
+    title: 'Asistencia',
+    slug: 'blog',
+    active: '/dashboard/asistencia',
+    href: '/dashboard/asistencia',
+    icon: Wallet
+  },
+  {
+    title: 'Compra',
+    slug: 'blog',
+    active: '/dashboard/compra',
+    href: '/dashboard/compra',
+    icon: Wallet
+  },
+  {
+    title: 'Resultados',
+    slug: 'blog',
+    active: '/dashboard/sections/resultados',
+    href: '/dashboard/sections/resultados',
+    icon: Wallet
   }
 ]
 

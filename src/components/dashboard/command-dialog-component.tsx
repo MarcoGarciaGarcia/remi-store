@@ -47,15 +47,15 @@ const CommandDialogDemo: React.FC = () => {
               {" "}
               {/* Ajusta el max-w aquí */}
               <Button
-                variant={"ghost"}
-                className="group rounded-full w-full flex items-center"
+                variant={"sorting"}
+                className="group rounded-lg w-full flex items-center bg-white border border-primary-500 hover:bg-white"
                 size="default"
                 onClick={() => setOpen(true)}
               >
                 <Search className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all" />
                 <p className="ml-3">Buscar</p>
                 <span className="ml-2 text-sm text-muted-foreground hidden lg:inline-flex items-center">
-                  <kbd className="pointer-events-none inline-flex h-5 select-none items-center gap-0.5 rounded bg-white dark:bg-gray-600/50 px-1.5 font-mono text-sm font-bold text-gray-600 dark:text-gray-400 opacity-100">
+                  <kbd className="pointer-events-none inline-flex h-5 select-none items-center gap-0.5 rounded bg-white dark:bg-white px-1.5 font-mono text-sm font-bold text-gray-500 dark:text-gray-400 opacity-100">
                     <span className="text-xs">⌘</span>J
                   </kbd>
                 </span>

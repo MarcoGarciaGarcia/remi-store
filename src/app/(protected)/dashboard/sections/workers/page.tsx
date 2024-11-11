@@ -1,4 +1,7 @@
 "use client";
+import { workersRegister } from "@/apis/apiRegister";
+import { WorkersSchema, WorkersSchemaType } from "@/schemas/worker-schema";
+import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Button,
   Card,
@@ -10,8 +13,6 @@ import {
   DropdownMenu,
   DropdownTrigger,
   Input,
-  Select,
-  SelectItem,
   Switch,
   Table,
   TableBody,
@@ -22,6 +23,7 @@ import {
 } from "@nextui-org/react";
 import { EllipsisVertical } from "lucide-react";
 import { FC } from "react";
+import { Controller, useForm } from "react-hook-form";
 const styles = {
   label: ["group-data-[filled-within=true]:text-black"],
   input: [
@@ -29,6 +31,7 @@ const styles = {
     "text-black",
     "placeholder:text-gray-600/50",
     "rounded-lg",
+    "w-72"
   ],
   innerWrapper: "bg-transparent",
   inputWrapper: [
@@ -47,6 +50,37 @@ const styles = {
 };
 
 const DashboardPage: FC = () => {
+  const form = useForm<WorkersSchemaType>({
+    resolver: zodResolver(WorkersSchema),
+    defaultValues: {
+      name: "",
+      email: "",
+      password: "",
+      password_confirmation: "",
+      rol: "",
+    },
+  });
+
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = form;
+
+  const onSubmit = async (values: WorkersSchemaType) => {
+    console.log(values);
+    try {
+      const response = await workersRegister(values);
+      console.log("Data saved successfully:", response);
+
+      if (response.status === 200) {
+      }
+    } catch (error) {
+      console.error("Error saving data:", error);
+    } finally {
+    }
+  };
+
   return (
     <section className="w-full h-full">
       <div className="grid justify-center">
@@ -135,52 +169,130 @@ const DashboardPage: FC = () => {
             </CardHeader>
 
             <CardBody>
-              <form>
+              <form onSubmit={handleSubmit(onSubmit)} method="POST">
                 <div className="grid justify-center gap-5 my-5">
-                  <Input
-                    placeholder="Email"
-                    classNames={styles}
-                    style={{ color: "black" }}
+                  <Controller
+                    name="name"
+                    control={control}
+                    render={({ field }) => (
+                      <div>
+                        <Input
+                          placeholder="Nombre"
+                          classNames={styles}
+                          {...field}
+                          style={{ color: "black" }}
+                          isRequired={true}
+                        />
+                        {errors.name?.message && (
+                          <span className="text-red-500 text-xs">
+                            {errors.name.message}
+                          </span>
+                        )}
+                      </div>
+                    )}
                   />
-                  <Input
-                    placeholder="Usuario"
-                    classNames={styles}
-                    style={{ color: "black" }}
+                  <Controller
+                    name="email"
+                    control={control}
+                    render={({ field }) => (
+                      <div>
+                        <Input
+                          placeholder="email"
+                          classNames={styles}
+                          {...field}
+                          style={{ color: "black" }}
+                          isRequired={true}
+                        />
+                        {errors.email?.message && (
+                          <span className="text-red-500 text-xs">
+                            {errors.email.message}
+                          </span>
+                        )}
+                      </div>
+                    )}
                   />
-                  <p className="text-gray-400 text-sm">Rol</p>
-                  <Select
-                    placeholder="Select"
-                    className="w-80 shadow-md rounded-md"
-                    style={{ color: "black" }}
-                    color="primary"
-                  >
-                    <SelectItem
-                      key={1}
-                      color="success"
-                      variant="solid"
-                      style={{ color: "white", backgroundColor: "#EB664A" }}
-                    >
-                      Admin
-                    </SelectItem>
-                    <SelectItem
-                      key={2}
-                      color="primary"
-                      style={{ color: "white", backgroundColor: "#EB664A" }}
-                    >
-                      Administrador
-                    </SelectItem>
-                    <SelectItem
-                      key={3}
-                      color="primary"
-                      style={{ color: "white", backgroundColor: "#EB664A" }}
-                    >
-                      Empleado
-                    </SelectItem>
-                  </Select>
+                  <Controller
+                    name="password"
+                    control={control}
+                    render={({ field }) => (
+                      <div>
+                        <Input
+                          placeholder="password"
+                          classNames={styles}
+                          {...field}
+                          style={{ color: "black" }}
+                          isRequired={true}
+                        />
+                        {errors.password?.message && (
+                          <span className="text-red-500 text-xs">
+                            {errors.password.message}
+                          </span>
+                        )}
+                      </div>
+                    )}
+                  />
+                  <Controller
+                    name="password_confirmation"
+                    control={control}
+                    render={({ field }) => (
+                      <div>
+                        <Input
+                          placeholder="password_confirmation"
+                          classNames={styles}
+                          {...field}
+                          style={{ color: "black" }}
+                          isRequired={true}
+                        />
+                        {errors.password_confirmation?.message && (
+                          <span className="text-red-500 text-xs">
+                            {errors.password_confirmation.message}
+                          </span>
+                        )}
+                      </div>
+                    )}
+                  />
+                  <Controller
+                    name="rol"
+                    control={control}
+                    render={({ field }) => (
+                      <div>
+                        <select
+                          {...field}
+                          className="w-full p-2 border rounded-md"
+                          style={{ color: "black" }}
+                          required
+                        >
+                          <option value="">Seleccione una opción</option>
+                          <option value="1">Admin</option>
+                          <option value="2">Empleado</option>
+                          <option value="3">Gestión</option>
+                        </select>
+                        {errors.rol?.message && (
+                          <span className="text-red-500 text-xs">
+                            {errors.rol.message}
+                          </span>
+                        )}
+                      </div>
+                    )}
+                  />
                 </div>
                 <div className="flex justify-center gap-10">
-                  <Button variant="bordered" color="danger" type="reset" className="w-28 border-1 border-danger-500 rounded-lg">Cancelar</Button>
-                  <Button variant="solid" color="primary" type="submit" className="w-28 rounded-lg">Guardar</Button>
+                  <Button
+                    variant="bordered"
+                    color="danger"
+                    type="reset"
+                    className="w-28 border-1 border-danger-500 rounded-lg"
+                  >
+                    Cancelar
+                  </Button>
+                  <Button
+                    variant="solid"
+                    color="primary"
+                    type="submit"
+                    className="w-28 rounded-lg"
+                  >
+                    Guardar
+                  </Button>
                 </div>
               </form>
             </CardBody>

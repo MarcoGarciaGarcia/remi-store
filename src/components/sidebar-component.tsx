@@ -24,11 +24,11 @@ const SidebarDesktop: React.FC = () => {
     const fetchUserProfile = () => {
       const storedProfile = sessionStorage.getItem("userRole");
 
-      if (storedProfile === "ROLE_ALUMNO") {
+      if (storedProfile === "1") {
         setBar(mainNavStudent);
-      } else if (storedProfile === "ROLE_ADMINISTRADOR") {
+      } else if (storedProfile === "3") {
         setBar(mainNav);
-      } else if (storedProfile === "ROLE_ADMINISTRATIVO") {
+      } else if (storedProfile === "2") {
         setBar(mainNavAdmin);
       }
     };

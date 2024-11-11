@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  Image,
   Table,
   TableBody,
   TableCell,
@@ -55,6 +56,14 @@ const DashboardPage: FC = () => {
           </TableBody>
         </Table>
       </div>
+      <Image
+        src={"/gv.jpg"}
+        alt="Foto"
+        width={300}
+        height={50}
+        loading="eager"
+        className=""
+      />
     </section>
   );
 };
