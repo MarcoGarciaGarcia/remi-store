@@ -11,7 +11,7 @@ import LineGraph from "./components/line-graph";
 
 const PagosSection: React.FC = () => {
   return (
-    <div>
+    <section className="h-screen">
       <h1 className="text-2xl ml-10 mt-5 text-primary-500 font-bold">
         Gestión de pagos
       </h1>
@@ -115,7 +115,7 @@ const PagosSection: React.FC = () => {
           </SwiperSlide>
         </Swiper>
       </div>
-    </div>
+    </section>
   );
 };
 

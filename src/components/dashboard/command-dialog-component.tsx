@@ -52,10 +52,10 @@ const CommandDialogDemo: React.FC = () => {
                 size="default"
                 onClick={() => setOpen(true)}
               >
-                <Search className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all" />
-                <p className="ml-3">Buscar</p>
+                <Search className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all text-black" />
+                <p className="ml-3 text-black">Buscar</p>
                 <span className="ml-2 text-sm text-muted-foreground hidden lg:inline-flex items-center">
-                  <kbd className="pointer-events-none inline-flex h-5 select-none items-center gap-0.5 rounded bg-white dark:bg-white px-1.5 font-mono text-sm font-bold text-gray-500 dark:text-gray-400 opacity-100">
+                  <kbd className="pointer-events-none inline-flex h-5 select-none items-center gap-0.5 rounded bg-white dark:bg-white px-1.5 font-mono text-sm font-bold text-gray-500 dark:text-black-400 opacity-100">
                     <span className="text-xs">⌘</span>J
                   </kbd>
                 </span>

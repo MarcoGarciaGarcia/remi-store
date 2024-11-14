@@ -66,7 +66,7 @@ const SidebarDesktop: React.FC = () => {
                           aria-hidden="true"
                         />
                       )}
-                      <span className="text-xs font-bold text-center leading-tight whitespace-normal break-words w-16 text-secondary-600">
+                      <span className="text-xs font-bold text-center leading-tight whitespace-normal break-words w-16 text-primary-500">
                         {title}
                       </span>
                     </div>
@@ -97,19 +97,18 @@ const SidebarDesktop: React.FC = () => {
                           >
                             <div className="ml-2 flex flex-col items-center justify-center w-24">
                               {" "}
-                              {/* Ajuste de ancho */}
-                              {IconChildren && (
+                              {IconChildren && (  
                                 <IconChildren
                                   className={cn(
                                     "h-6 w-6 shrink-0 mb-1 text-secondary-600",
                                     activeChildren === path &&
-                                      "text-secondary-500"
+                                      "text-primary-500"
                                   )}
                                   aria-hidden="true"
                                   aria-label={title}
                                 />
                               )}
-                              <span className="text-secondary-600 text-xs font-bold text-center leading-tight whitespace-normal break-words w-full">
+                              <span className="text-primary-500 text-xs font-bold text-center leading-tight whitespace-normal break-words w-full">
                                 {title}
                               </span>
                             </div>
@@ -122,7 +121,8 @@ const SidebarDesktop: React.FC = () => {
               </AccordionItem>
             ) : (
               href && (
-                <Tooltip content={title} placement="right" color="foreground">
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                <Tooltip content={title} placement="right" color={"0" as any} className="bg-white text-primary-800 font-light p-2 rounded-lg">
                   <Link
                     key={slug}
                     href={href}
@@ -131,17 +131,18 @@ const SidebarDesktop: React.FC = () => {
                         variant: active === path ? "destructive" : "sorting",
                         size: null,
                       }),
-                      "justify-start w-full mb-3"
+                      "justify-start w-full mb-3",
+                      active === path ? "bg-secondary-100" : ""
                     )}
                   >
                     <div className="ml-5 flex flex-col items-center justify-center w-20">
                       {Icon && (
                         <Icon
-                          className="h-6 w-6 mb-1 text-secondary-600"
+                          className="h-6 w-6 mb-1 text-secondary-800"
                           aria-hidden="true"
                         />
                       )}
-                      <span className="text-secondary-600 text-xs font-bold text-center leading-tight whitespace-normal break-words w-20">
+                      <span className="text-secondary-800 text-xs font-semibold text-center leading-tight whitespace-normal break-words w-20">
                         {title}
                       </span>
                     </div>

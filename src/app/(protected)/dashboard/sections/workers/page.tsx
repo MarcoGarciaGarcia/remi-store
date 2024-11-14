@@ -85,41 +85,41 @@ const DashboardPage: FC = () => {
     <section className="w-full h-full">
       <div className="grid justify-center">
         <div className="flex justify-center">
-          <h1 className="text-primary-500 text-4xl font-bold">
+          <h1 className="text-primary-500 text-4xl font-bold font-sans pt-5">
             Gestión de Empleados
           </h1>
         </div>
         <div className="flex my-5 ml-60 justify-center">
-          <Card shadow="md" className="border-1 rounded-lg p-5">
+          <Card shadow="lg" className="rounded-lg p-5 border-none mt-3">
             <CardBody>
               <Table
                 removeWrapper
                 aria-label="Example static collection table"
-                className="w-[800px]"
+                className="w-[800px] rounded-lg bg-white"
               >
-                <TableHeader className="flex justify-center items-center">
-                  <TableColumn className="bg-secondary-500">
-                    <p className="text-primary-500 text-center">Usuario</p>
+                <TableHeader className="flex justify-center items-center rounded-lg">
+                  <TableColumn className="bg-primary-500">
+                    <p className="text-white text-center">Usuario</p>
                   </TableColumn>
-                  <TableColumn className="bg-secondary-500 justify-center items-center">
-                    <p className="text-primary-500 text-center">Rol</p>
+                  <TableColumn className="bg-primary-500 justify-center items-center">
+                    <p className="text-white text-center">Rol</p>
                   </TableColumn>
-                  <TableColumn className="bg-secondary-500">
-                    <p className="text-primary-500 text-center">Estatus</p>
+                  <TableColumn className="bg-primary-500">
+                    <p className="text-white text-center">Estatus</p>
                   </TableColumn>
-                  <TableColumn className="bg-secondary-500 justify-center items-center">
-                    <p className="text-primary-500 text-center">Opciones</p>
+                  <TableColumn className="bg-primary-500 justify-center items-center">
+                    <p className="text-white text-center">Opciones</p>
                   </TableColumn>
                 </TableHeader>
                 <TableBody>
                   <TableRow key="1">
-                    <TableCell className="text-default-300 text-center">
+                    <TableCell className="text-secondary-900 text-center">
                       user
                     </TableCell>
-                    <TableCell className="text-default-300 text-center">
+                    <TableCell className="text-secondary-900 text-center">
                       role
                     </TableCell>
-                    <TableCell className="text-default-300 text-center">
+                    <TableCell className="text-secondary-900 text-center">
                       <Switch
                         defaultSelected
                         aria-label="Automatic updates"
@@ -127,9 +127,9 @@ const DashboardPage: FC = () => {
                       />
                     </TableCell>
                     <TableCell className="text-default-300 text-center">
-                      <Dropdown className="border-1 w-28 rounded-lg">
+                      <Dropdown className="w-28 rounded-lg border-1 border-primary-800">
                         <DropdownTrigger>
-                          <Button variant="bordered">
+                          <Button variant="light">
                             <EllipsisVertical
                               size={20}
                               className="text-primary-500"
@@ -137,15 +137,15 @@ const DashboardPage: FC = () => {
                           </Button>
                         </DropdownTrigger>
                         <DropdownMenu aria-label="Static Actions">
-                          <DropdownItem key="see" className="text-black">
+                          <DropdownItem key="see" className="text-primary-800 font-sans">
                             Ver
                           </DropdownItem>
-                          <DropdownItem key="update" className="text-black">
+                          <DropdownItem key="update" className="text-primary-800 font-sans">
                             Actualizar
                           </DropdownItem>
                           <DropdownItem
                             key="delete"
-                            className="text-danger"
+                            className="text-secondary-800 font-sans"
                             color="danger"
                           >
                             Dar de baja
@@ -159,16 +159,16 @@ const DashboardPage: FC = () => {
             </CardBody>
           </Card>
 
-          <Card className="w-[400px] ml-16 border-1 rounded-lg p-8" shadow="md">
+          <Card className="w-[400px] ml-16 bg-white rounded-lg p-8" shadow="md">
             <CardHeader className="flex justify-center">
               <div className="flex justify-center">
-                <p className="text-md font-semibold text-black text-center">
-                  Agregar un Nuevo Usuario
+                <p className="text-lg font-normal text-secondary-900 text-center font-sans">
+                  Agregar un nuevo usuario
                 </p>
               </div>
             </CardHeader>
 
-            <CardBody>
+            <CardBody className="border-none">
               <form onSubmit={handleSubmit(onSubmit)} method="POST">
                 <div className="grid justify-center gap-5 my-5">
                   <Controller
@@ -237,7 +237,7 @@ const DashboardPage: FC = () => {
                     render={({ field }) => (
                       <div>
                         <Input
-                          placeholder="password_confirmation"
+                          placeholder="password confirmation"
                           classNames={styles}
                           {...field}
                           style={{ color: "black" }}
@@ -259,7 +259,7 @@ const DashboardPage: FC = () => {
                         <select
                           {...field}
                           className="w-full p-2 border rounded-md"
-                          style={{ color: "black" }}
+                          style={{ color: "gray" }}
                           required
                         >
                           <option value="">Seleccione una opción</option>
@@ -279,9 +279,9 @@ const DashboardPage: FC = () => {
                 <div className="flex justify-center gap-10">
                   <Button
                     variant="bordered"
-                    color="danger"
+                    color="primary"
                     type="reset"
-                    className="w-28 border-1 border-danger-500 rounded-lg"
+                    className="w-28 text-primary-500 border-2 border-primary-500 rounded-lg"
                   >
                     Cancelar
                   </Button>
