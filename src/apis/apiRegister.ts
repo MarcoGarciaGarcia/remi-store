@@ -35,6 +35,41 @@ export const workersRegister = async (data: any) => {
   }
 };
 
+const transformDataProducts = (data: any) => {
+  return {
+    nombre_producto: data.nombre_producto,
+    codigo_barras: data.codigo_barras,
+    categoria: data.categoria,
+    precio_unitario: data.precio_unitario,
+    precio_venta: data.precio_venta,
+    stock: data.stock,
+    id_proveedor: data.id_proveedor,
+    estado: data.estado,
+  };
+};
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const productsRegister = async (data: any) => {
+  console.log("token: " + data);
+  try {
+    const transformedData = transformDataProducts(data);
+    const response = await axios.post(
+      `${process.env.NEXT_PUBLIC_API_URL}/newProducto`,
+      transformedData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    return response;
+  } catch (error) {
+    console.error("Error trying Register:", error);
+    throw error;
+  }
+};
+
 export const getWorkers = async () => {
   try {
     const response = await axios.get(

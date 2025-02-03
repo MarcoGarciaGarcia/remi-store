@@ -11,7 +11,7 @@ const LayoutDashboard: React.FC<ILayoutDashboardProps> = ({ children }) => {
       <div className="block lg:ml-[0px] bg-gradient-to-r from-pink-50 to-slate-100">
         <SidebarDesktop />{" "}
         {/*Este componente es para pantallas md hacia arriba*/}
-        <div className="h-full pt-4 pb-16 px-3x !overflow-hidden lg:ml-[180px] md:ml-0 ml-[200px]">
+        <div className="min-h-screen pt-4 pb-16 px-3x !overflow-hidden lg:ml-[180px] md:ml-0 ml-[200px]">
           <HeaderDashboard />
           {children}
         </div>

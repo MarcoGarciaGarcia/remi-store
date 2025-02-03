@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable @next/next/no-img-element */
 "use client";
-import { Card, CardBody, CardHeader, Image } from "@nextui-org/react";
+import { Card, CardBody, CardHeader } from "@nextui-org/react";
 import LoginForm from "./sections/login-form";
 
 const HeroSection: React.FC = () => {
@@ -16,9 +16,9 @@ const HeroSection: React.FC = () => {
       <div className="flex flex-col lg:flex-row justify-between items-center mx-auto max-w-7xl py-12 sm:pt-32 sm:pb-32 gap-y-12">
         <Card className="w-[90vw] max-w-[400px] p-8 py-14 sm:py-1 bg-white rounded-lg">
           <CardHeader>
-            <div className="flex flex-col items-center justify-center">
-              <Image src="/logo.png" width={100}></Image>
-              <p className="text-small text-gray-600 text-center mb-2">
+            <div className="flex flex-col items-center w-full justify-center">
+              <img src="/logo-black.webp" className="w-40 justify-center mb-4"></img>
+              <p className="text-small text-gray-600 text-center hidden mb-2">
                 Ingresa tu usuario y contraseña para acceder a la plataforma.
               </p>
             </div>

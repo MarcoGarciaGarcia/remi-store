@@ -1,4 +1,6 @@
 "use client";
+import { getAllProviders } from "@/apis/api-proveedores";
+import { IProveedor, IProveedores } from "@/interfaces/proveedores";
 import {
   Card,
   CardBody,
@@ -41,13 +43,27 @@ const DashboardPage: NextPage = () => {
 
     requestAnimationFrame(animate); // Inicia la animación
 
-    return () => {
-      // Limpiar recursos si fuera necesario
+    return () => {};
+  }, []);
+
+  const [proveedor, setProveedor] = useState<IProveedor[]>([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await getAllProviders();
+        setProveedor(response.data.data);
+      } catch (error) {
+        console.error("Error get providers:", error);
+        throw error;
+      }
     };
+
+    fetchData();
   }, []);
 
   return (
-    <section className="w-full h-screen px-10 rounded-lg my-10">
+    <section className="w-full min-h-screen bg-transparent px-10 rounded-lg my-10">
       <div className="relative z-10 grid justify-center">
         <div className="flex justify-center relative h-20 items-center">
           <div className="absolute inset-0 bg-transparent opacity-100"></div>
@@ -138,42 +154,31 @@ const DashboardPage: NextPage = () => {
                   <p className="text-black text-center">Nombre</p>
                 </TableColumn>
                 <TableColumn className="bg-pink-100 justify-center items-center rounded-e-lg">
-                  <p className="text-black text-center">Marca</p>
+                  <p className="text-black text-center">Contacto</p>
                 </TableColumn>
               </TableHeader>
               <TableBody>
-                <TableRow key="1">
-                  <TableCell className="text-[#212529] font-sans text-center">
-                    Tony Reichert
-                  </TableCell>
-                  <TableCell className="text-[#212529] font-sans text-center">
-                    CEO
-                  </TableCell>
-                </TableRow>
-                <TableRow key="2">
-                  <TableCell className="text-[#212529] font-sans text-center">
-                    Zoey Lang
-                  </TableCell>
-                  <TableCell className="text-[#212529] font-sans text-center">
-                    Technical Lead
-                  </TableCell>
-                </TableRow>
-                <TableRow key="3">
-                  <TableCell className="text-[#212529] font-sans text-center">
-                    Jane Fisher
-                  </TableCell>
-                  <TableCell className="text-[#212529] font-sans text-center">
-                    Senior Developer
-                  </TableCell>
-                </TableRow>
-                <TableRow key="4">
-                  <TableCell className="text-[#212529] font-sans text-center">
-                    William Howard
-                  </TableCell>
-                  <TableCell className="text-[#212529] font-sans text-center">
-                    Community Manager
-                  </TableCell>
-                </TableRow>
+                {proveedor.length > 0 ? (
+                  proveedor.map((proveedor) => (
+                    <TableRow key={proveedor.id_proveedor}>
+                      <TableCell className="text-[#212529] font-sans text-center">
+                        {proveedor.nombre_proveedor}
+                      </TableCell>
+                      <TableCell className="text-[#212529] font-sans text-center">
+                        {proveedor.telefono}
+                      </TableCell>
+                    </TableRow>
+                  ))
+                ) : (
+                  <TableRow key="1">
+                    <TableCell className="text-[#212529] font-sans text-center">
+                      Ninguno
+                    </TableCell>
+                    <TableCell className="text-[#212529] font-sans text-center">
+                      Ninguno
+                    </TableCell>
+                  </TableRow>
+                )}
               </TableBody>
             </Table>
           </div>

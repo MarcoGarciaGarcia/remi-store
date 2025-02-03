@@ -22,10 +22,6 @@ const SerchProduct: React.FC = () => {
     const token = sessionStorage.getItem("authToken");
     const fetchProducts = async () => {
       try {
-        if (!token) {
-          console.error("No se encontró un token válido.");
-          return; 
-        }
         const response = await axios.get(
           `${process.env.NEXT_PUBLIC_API_URL}/getAllProductos`,
           {

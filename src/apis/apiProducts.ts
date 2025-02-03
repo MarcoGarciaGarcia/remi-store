@@ -20,7 +20,7 @@ export const workersRegister = async (data: any) => {
   try {
     const transformedData = transformData(data);
     const response = await axios.post(
-      `http://192.168.210.229:8000/api/register`,
+      `${process.env.NEXT_PUBLIC_API_URL}/register`,
       transformedData,
       {
         headers: {

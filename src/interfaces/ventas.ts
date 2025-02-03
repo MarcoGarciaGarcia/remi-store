@@ -9,7 +9,7 @@ interface DetalleVenta {
     total_neto_producto: number;
   }
   
-  interface Venta {
+  export interface Venta {
     id_ventas: number;
     nombre_usuario: string;
     fecha_venta: string; // Puedes cambiarlo a Date si prefieres trabajar con objetos Date
@@ -27,4 +27,7 @@ interface DetalleVenta {
     ganancia: number;
     ventas: Venta[];
   }
+
+
+  
   

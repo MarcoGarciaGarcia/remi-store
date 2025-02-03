@@ -168,7 +168,7 @@ const LoginForm: React.FC = () => {
       </div>
       <Button
         type="submit"
-        className="bg-primary-500 text-white rounded-lg"
+        className="bg-black text-white rounded-lg"
         radius="sm"
         isLoading={isLoading}
       >
