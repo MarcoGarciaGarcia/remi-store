@@ -1,5 +1,5 @@
 // utils/apiService.ts
-import { IProducto, IProductos } from "@/schemas/productos-schema";
+import { IProducto } from "@/schemas/productos-schema";
 import axios from "axios";
 
 const token = sessionStorage.getItem("authToken");
