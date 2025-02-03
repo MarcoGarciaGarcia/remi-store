@@ -8,7 +8,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "./ui/accordion";
-import { IRoute, mainNav, mainNavAdmin, mainNavStudent } from "@/routes";
+import { IRoute, mainNav, mainNavAdmin, mainNavWorker } from "@/routes";
 
 import Link from "next/link";
 import { sortAlphabetically } from "@/utilities";
@@ -25,11 +25,11 @@ const SidebarDesktop: React.FC = () => {
       const storedProfile = sessionStorage.getItem("userRole");
 
       if (storedProfile === "1") {
-        setBar(mainNavStudent);
-      } else if (storedProfile === "3") {
         setBar(mainNav);
-      } else if (storedProfile === "2") {
+      } else if (storedProfile === "3") {
         setBar(mainNavAdmin);
+      } else if (storedProfile === "2") {
+        setBar(mainNavWorker);
       }
     };
 
@@ -37,13 +37,17 @@ const SidebarDesktop: React.FC = () => {
   }, []);
 
   return (
-    <aside className="hidden lg:block lg:w-[115px] max-w-xs h-screen fixed left-0 top-0 z-40 border-r bg-white">
-      <div className="h-full px-1 py-28">
-        <Accordion type="multiple" className="space-y-2">
+    <aside className="hidden lg:block lg:w-[180px] max-w-xs h-screen fixed left-0 top-0 z-40 border-r bg-transparent border-0 border-none">
+      <div className="absolute inset-0 backdrop-blur-lg z-0 p-5"></div>
+      <div className="h-full px-1 py-32 relative">
+        <Accordion
+          type="multiple"
+          className="space-y-2 z-30 bg-white bg-clip-padding backdrop-filter backdrop-blur-xl bg-opacity-60 shadow-xl duration-200 transform py-8 px-5 rounded-lg"
+        >
           {bar.map(({ href, icon: Icon, title, slug, children, active }) =>
             children?.length ? (
               <AccordionItem
-                key={slug}
+                key={slug} // Asumimos que slug es único para este nivel
                 value={`item-${slug}`}
                 className="flex flex-col border-b-0"
               >
@@ -55,34 +59,44 @@ const SidebarDesktop: React.FC = () => {
                           ? "default"
                           : "outline",
                     }),
-                    "justify-between w-full mt-3 mb-4 hover:shadow-none hover:bg-transparent hover:text-inherit" //mb (Margen inferior) mt (Margen Superior)
+                    "justify-between w-full mt-3 mb-4 hover:shadow-none hover:bg-transparent hover:text-inherit text-primary-900"
                   )}
                 >
-                  <Tooltip content={title} key={slug} color="foreground" placement="right">
-                    <div className="ml-3 flex flex-col items-center justify-center w-full">
+                  <Tooltip
+                    content={title}
+                    key={slug}
+                    color="foreground"
+                    placement="right"
+                  >
+                    <div className="flex items-center w-full">
                       {Icon && (
                         <Icon
-                          className="h-6 w-6 mb-1 text-secondary-600"
+                          className="h-6 w-6 mr-2 text-primary-900"
                           aria-hidden="true"
                         />
                       )}
-                      <span className="text-xs font-bold text-center leading-tight whitespace-normal break-words w-16 text-primary-500">
+                      <span className="text-xs font-bold text-center leading-tight whitespace-normal break-words w-16 text-primary-900">
                         {title}
                       </span>
                     </div>
                   </Tooltip>
                 </AccordionTrigger>
                 <AccordionContent className="pb-4 pt-2 w-full">
-                  <div className="flex flex-col items-center space-y-2">
+                  <div className="flex flex-col items-start space-y-2">
                     {sortAlphabetically<IRoute>(children, "title").map(
                       ({
                         href: hrefChildren,
-                        slug,
+                        slug: childSlug,
                         title,
                         active: activeChildren,
                         icon: IconChildren,
                       }) => (
-                        <Tooltip content={title} key={slug} placement="right" color='foreground'>
+                        <Tooltip
+                          content={title}
+                          key={childSlug}
+                          placement="right"
+                          color="foreground"
+                        >
                           <Link
                             href={`${href}${hrefChildren}` || "/"}
                             className={cn(
@@ -90,25 +104,24 @@ const SidebarDesktop: React.FC = () => {
                                 size: null,
                                 variant: "ghost",
                               }),
-                              "flex items-center justify-center w-full",
+                              "flex items-center justify-start w-full",
                               activeChildren === path &&
                                 "!text-black dark:!text-white"
                             )}
                           >
-                            <div className="ml-2 flex flex-col items-center justify-center w-24">
-                              {" "}
-                              {IconChildren && (  
+                            <div className="flex items-center w-full">
+                              {IconChildren && (
                                 <IconChildren
                                   className={cn(
-                                    "h-6 w-6 shrink-0 mb-1 text-secondary-600",
+                                    "h-6 w-6 mr-2 shrink-0 text-primary-900",
                                     activeChildren === path &&
-                                      "text-primary-500"
+                                      "text-primary-900"
                                   )}
                                   aria-hidden="true"
                                   aria-label={title}
                                 />
                               )}
-                              <span className="text-primary-500 text-xs font-bold text-center leading-tight whitespace-normal break-words w-full">
+                              <span className="text-primary-900 text-xs font-bold text-center leading-tight whitespace-normal break-words w-full">
                                 {title}
                               </span>
                             </div>
@@ -121,8 +134,12 @@ const SidebarDesktop: React.FC = () => {
               </AccordionItem>
             ) : (
               href && (
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                <Tooltip content={title} placement="right" color={"0" as any} className="bg-white text-primary-800 font-light p-2 rounded-lg">
+                <Tooltip
+                  content={title}
+                  placement="right"
+                  color={"0" as any}
+                  className="bg-white text-primary-800 font-light p-2 rounded-lg"
+                >
                   <Link
                     key={slug}
                     href={href}
@@ -131,18 +148,30 @@ const SidebarDesktop: React.FC = () => {
                         variant: active === path ? "destructive" : "sorting",
                         size: null,
                       }),
-                      "justify-start w-full mb-3",
-                      active === path ? "bg-secondary-100" : ""
+                      "justify-start w-full mb-3 px-3",
+                      active === path
+                        ? "group bg-black hover:bg-white transition"
+                        : ""
                     )}
                   >
-                    <div className="ml-5 flex flex-col items-center justify-center w-20">
+                    <div className="flex items-center w-full py-2">
                       {Icon && (
                         <Icon
-                          className="h-6 w-6 mb-1 text-secondary-800"
+                          className={
+                            active === path
+                              ? "h-6 w-6 mr-2 text-white group-hover:text-black"
+                              : "h-6 w-6 mr-2 text-black"
+                          }
                           aria-hidden="true"
                         />
                       )}
-                      <span className="text-secondary-800 text-xs font-semibold text-center leading-tight whitespace-normal break-words w-20">
+                      <span
+                        className={
+                          active === path
+                            ? "group-hover:text-black text-white text-xs font-semibold text-center leading-tight whitespace-normal break-words w-20"
+                            : "text-black text-xs font-semibold text-center leading-tight whitespace-normal break-words w-20"
+                        }
+                      >
                         {title}
                       </span>
                     </div>

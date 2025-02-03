@@ -25,9 +25,9 @@ const BarGraph: React.FC = () => {
 
   // Function to determine color based on value
   const getColor = (value: number) => {
-    if (value > 15) return 'rgb(235, 102, 74)' // High values
-    if (value > 5) return 'rgba(1, 1, 1, 0.2)' // Medium values
-    return 'rgba(0, 0, 0, 1)' // Low values
+    if (value > 15) return 'rgb(6, 180, 219)' // High values
+    if (value > 5) return 'rgb(103, 227, 249)' // Medium values
+    return 'rgb(14, 111, 144)' // Low values
   }
 
   // Generate an array of colors for each data point

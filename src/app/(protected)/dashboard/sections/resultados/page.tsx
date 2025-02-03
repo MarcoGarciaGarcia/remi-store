@@ -12,10 +12,10 @@ import LineGraph from "./components/line-graph";
 const PagosSection: React.FC = () => {
   return (
     <section className="h-screen">
-      <h1 className="text-2xl ml-10 mt-5 text-primary-500 font-bold">
+      <h1 className="text-4xl font-sans text-center mt-5 text-black font-bold">
         Gestión de pagos
       </h1>
-      <div className="flex gap-10 w-full -mt-12">
+      <div className="flex gap-8 w-full -mt-12">
         <Swiper
           modules={[Navigation, Pagination]}
           spaceBetween={30}
@@ -45,31 +45,31 @@ const PagosSection: React.FC = () => {
             <div className="card rounded-lg transition-transform duration-300 hover:z-10">
               <Card
                 isBlurred
-                className="border-medium border-secondary-500 bg-white max-w-[610px] h-[300px]"
+                className="shadow-lg rounded-lg bg-white max-w-[610px] h-[300px] animate-fade-right animate-appearance-in"
                 shadow="sm"
               >
                 <CardBody>
                   <div className="grid grid-cols-6 md:grid-cols-12 gap-6 md:gap-4 h-full">
                     <div className="relative col-span-6 md:col-span-4 grid">
-                      <h2 className="text-xl text-center mt-3 text-primary-500 font-semibold">
+                      <h2 className="text-2xl text-center mt-3 text-black font-semibold font-sans">
                         Flujo total de ingresos
                       </h2>
                       <div className="-mt-12">
                         <div className="flex w-full ml-16 items-center">
                           <div className="bg-primary-500 w-3 h-3"></div>
-                          <p className="text-sm text-center ml-1 mt-2 text-black">
+                          <p className="text-sm text-center ml-1 mt-2 text-black font-sans">
                             Alto
                           </p>
                         </div>
                         <div className="flex w-full ml-16 items-center">
-                          <div className="bg-gray-300 w-3 h-3"></div>
-                          <p className="text-sm text-center ml-1 mt-2 text-black">
+                          <div className="bg-primary-300 w-3 h-3"></div>
+                          <p className="text-sm text-center ml-1 mt-2 text-black font-sans">
                             Medio
                           </p>
                         </div>
                         <div className="flex w-full ml-16 items-center">
-                          <div className="bg-black w-3 h-3"></div>
-                          <p className="text-sm text-center ml-1 mt-2 text-black">
+                          <div className="bg-primary-700 w-3 h-3"></div>
+                          <p className="text-sm text-center ml-1 mt-2 text-black font-sans">
                             Bajo
                           </p>
                         </div>
@@ -87,19 +87,19 @@ const PagosSection: React.FC = () => {
             <div className="card rounded-lg transition-transform duration-300 hover:z-10">
               <Card
                 isBlurred
-                className="border-medium border-secondary-500 bg-white max-w-[610px] h-[300px]"
+                className="shadow-lg rounded-lg bg-white max-w-[610px] h-[300px] animate-appearance-in"
                 shadow="sm"
               >
                 <CardBody>
                   <div className="grid grid-cols-6 md:grid-cols-12 gap-6 md:gap-4 h-full">
                     <div className="relative col-span-6 md:col-span-4 grid ml-5">
-                      <h2 className="text-2xl text-center mt-3 font-semibold text-primary-500">
+                      <h2 className="text-2xl text-center mt-3 font-semibold text-black font-sans">
                         Comportamiento de las ventas
                       </h2>
                       <div className="-mt-8">
                         <div className="flex w-full ml-16 items-center">
                           <div className="bg-primary-500 w-3 h-3"></div>
-                          <p className="text-sm text-center ml-1 mt-2 text-black">
+                          <p className="text-sm text-center ml-1 mt-2 text-black font-sans">
                             Alto
                           </p>
                         </div>

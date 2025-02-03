@@ -1,5 +1,6 @@
 "use client";
-import { workersRegister } from "@/apis/apiRegister";
+import { getWorkers, workersRegister } from "@/apis/apiRegister";
+import { IWorker } from "@/interfaces/workers";
 import { WorkersSchema, WorkersSchemaType } from "@/schemas/worker-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -13,7 +14,6 @@ import {
   DropdownMenu,
   DropdownTrigger,
   Input,
-  Switch,
   Table,
   TableBody,
   TableCell,
@@ -22,7 +22,7 @@ import {
   TableRow,
 } from "@nextui-org/react";
 import { EllipsisVertical } from "lucide-react";
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 const styles = {
   label: ["group-data-[filled-within=true]:text-black"],
@@ -31,7 +31,7 @@ const styles = {
     "text-black",
     "placeholder:text-gray-600/50",
     "rounded-lg",
-    "w-72"
+    "w-72",
   ],
   innerWrapper: "bg-transparent",
   inputWrapper: [
@@ -50,6 +50,22 @@ const styles = {
 };
 
 const DashboardPage: FC = () => {
+  const [workers, setWorkers] = useState<IWorker>();
+
+  useEffect(() => {
+    const GetWorkers = async () => {
+      try {
+        const response = await getWorkers();
+        setWorkers(response.data);
+        console.log("first: " + JSON.stringify(workers?.users));
+      } catch (error) {
+        console.error("Error get data:", error);
+      }
+    };
+
+    GetWorkers();
+  }, []);
+
   const form = useForm<WorkersSchemaType>({
     resolver: zodResolver(WorkersSchema),
     defaultValues: {
@@ -61,6 +77,8 @@ const DashboardPage: FC = () => {
     },
   });
 
+  const [isLoading, setIsLoading] = useState(false);
+
   const {
     handleSubmit,
     control,
@@ -69,100 +87,164 @@ const DashboardPage: FC = () => {
 
   const onSubmit = async (values: WorkersSchemaType) => {
     console.log(values);
+    setIsLoading(true);
     try {
       const response = await workersRegister(values);
       console.log("Data saved successfully:", response);
 
-      if (response.status === 200) {
+      if (response.status === 201) {
+        alert("Usuario creado");
+        control._reset();
+        form.reset();
       }
+      form.reset();
     } catch (error) {
       console.error("Error saving data:", error);
     } finally {
+      setIsLoading(false);
     }
   };
 
   return (
-    <section className="w-full h-full">
+    <section className="w-full bg-transparent">
       <div className="grid justify-center">
         <div className="flex justify-center">
-          <h1 className="text-primary-500 text-4xl font-bold font-sans pt-5">
+          <h1 className="text-black text-4xl font-bold font-sans pt-5">
             Gestión de Empleados
           </h1>
         </div>
         <div className="flex my-5 ml-60 justify-center">
-          <Card shadow="lg" className="rounded-lg p-5 border-none mt-3">
+          <Card
+            shadow="lg"
+            className="rounded-lg p-5 border-none mt-3 bg-white shadow-lg"
+          >
             <CardBody>
               <Table
                 removeWrapper
                 aria-label="Example static collection table"
-                className="w-[800px] rounded-lg bg-white"
+                className="w-[600px] rounded-lg bg-white"
               >
                 <TableHeader className="flex justify-center items-center rounded-lg">
-                  <TableColumn className="bg-primary-500">
+                  <TableColumn className="bg-black rounded-s-lg">
                     <p className="text-white text-center">Usuario</p>
                   </TableColumn>
-                  <TableColumn className="bg-primary-500 justify-center items-center">
+                  <TableColumn className="bg-black justify-center items-center">
                     <p className="text-white text-center">Rol</p>
                   </TableColumn>
-                  <TableColumn className="bg-primary-500">
+                  <TableColumn className="bg-black">
                     <p className="text-white text-center">Estatus</p>
                   </TableColumn>
-                  <TableColumn className="bg-primary-500 justify-center items-center">
+                  <TableColumn className="bg-black justify-center items-center rounded-e-lg">
                     <p className="text-white text-center">Opciones</p>
                   </TableColumn>
                 </TableHeader>
                 <TableBody>
-                  <TableRow key="1">
-                    <TableCell className="text-secondary-900 text-center">
-                      user
-                    </TableCell>
-                    <TableCell className="text-secondary-900 text-center">
-                      role
-                    </TableCell>
-                    <TableCell className="text-secondary-900 text-center">
-                      <Switch
-                        defaultSelected
-                        aria-label="Automatic updates"
-                        color="primary"
-                      />
-                    </TableCell>
-                    <TableCell className="text-default-300 text-center">
-                      <Dropdown className="w-28 rounded-lg border-1 border-primary-800">
-                        <DropdownTrigger>
-                          <Button variant="light">
-                            <EllipsisVertical
-                              size={20}
-                              className="text-primary-500"
-                            />
-                          </Button>
-                        </DropdownTrigger>
-                        <DropdownMenu aria-label="Static Actions">
-                          <DropdownItem key="see" className="text-primary-800 font-sans">
-                            Ver
-                          </DropdownItem>
-                          <DropdownItem key="update" className="text-primary-800 font-sans">
-                            Actualizar
-                          </DropdownItem>
-                          <DropdownItem
-                            key="delete"
-                            className="text-secondary-800 font-sans"
-                            color="danger"
-                          >
-                            Dar de baja
-                          </DropdownItem>
-                        </DropdownMenu>
-                      </Dropdown>
-                    </TableCell>
-                  </TableRow>
+                  {workers ? (
+                    workers?.users.map((worker) => (
+                      <TableRow key={worker.id}>
+                        <TableCell className="text-black text-start">
+                          {worker.name}
+                        </TableCell>
+                        <TableCell className="text-black text-center">
+                          {worker.rol}
+                        </TableCell>
+                        <TableCell className="text-black text-center">
+                          {worker.activo === 1 ? (
+                            <p className="text-pink-500">Activo</p>
+                          ) : (
+                            <p className="text-gray-300">Inactivo</p>
+                          )}
+                        </TableCell>
+                        <TableCell className="text-default-300 text-center">
+                          <Dropdown className="w-28 rounded-lg border-1 border-black bg-white">
+                            <DropdownTrigger>
+                              <Button variant="light">
+                                <EllipsisVertical
+                                  size={20}
+                                  className="text-black"
+                                />
+                              </Button>
+                            </DropdownTrigger>
+                            <DropdownMenu aria-label="Static Actions">
+                              <DropdownItem
+                                key="see"
+                                className="text-black font-sans"
+                              >
+                                Ver
+                              </DropdownItem>
+                              <DropdownItem
+                                key="update"
+                                className="text-black font-sans"
+                              >
+                                Actualizar
+                              </DropdownItem>
+                              <DropdownItem
+                                key="delete"
+                                className="text-black font-sans"
+                                color="danger"
+                              >
+                                Dar de baja
+                              </DropdownItem>
+                            </DropdownMenu>
+                          </Dropdown>
+                        </TableCell>
+                      </TableRow>
+                    ))
+                  ) : (
+                    <TableRow key={0}>
+                      <TableCell className="text-black text-center">
+                        Ninguno
+                      </TableCell>
+                      <TableCell className="text-black text-center">
+                        Ninguno
+                      </TableCell>
+                      <TableCell className="text-black text-center">
+                        <p>Default</p>
+                      </TableCell>
+                      <TableCell className="text-default-300 text-center">
+                        <Dropdown className="w-28 rounded-lg border-1 border-black">
+                          <DropdownTrigger>
+                            <Button variant="light">
+                              <EllipsisVertical
+                                size={20}
+                                className="text-black"
+                              />
+                            </Button>
+                          </DropdownTrigger>
+                          <DropdownMenu aria-label="Static Actions">
+                            <DropdownItem
+                              key="see"
+                              className="text-black font-sans"
+                            >
+                              Ver
+                            </DropdownItem>
+                            <DropdownItem
+                              key="update"
+                              className="text-black font-sans"
+                            >
+                              Actualizar
+                            </DropdownItem>
+                            <DropdownItem
+                              key="delete"
+                              className="text-black font-sans"
+                              color="danger"
+                            >
+                              Dar de baja
+                            </DropdownItem>
+                          </DropdownMenu>
+                        </Dropdown>
+                      </TableCell>
+                    </TableRow>
+                  )}
                 </TableBody>
               </Table>
             </CardBody>
           </Card>
 
-          <Card className="w-[400px] ml-16 bg-white rounded-lg p-8" shadow="md">
+          <Card className="w-[400px] h-[470px] ml-16 bg-white rounded-lg p-8 shadow-lg mt-3">
             <CardHeader className="flex justify-center">
               <div className="flex justify-center">
-                <p className="text-lg font-normal text-secondary-900 text-center font-sans">
+                <p className="text-lg text-black text-center font-bold font-sans">
                   Agregar un nuevo usuario
                 </p>
               </div>
@@ -217,6 +299,7 @@ const DashboardPage: FC = () => {
                     render={({ field }) => (
                       <div>
                         <Input
+                          type="password"
                           placeholder="password"
                           classNames={styles}
                           {...field}
@@ -237,6 +320,7 @@ const DashboardPage: FC = () => {
                     render={({ field }) => (
                       <div>
                         <Input
+                          type="password"
                           placeholder="password confirmation"
                           classNames={styles}
                           {...field}
@@ -258,7 +342,7 @@ const DashboardPage: FC = () => {
                       <div>
                         <select
                           {...field}
-                          className="w-full p-2 border rounded-md"
+                          className="w-full p-2 border-none text-gray-200 rounded-lg"
                           style={{ color: "gray" }}
                           required
                         >
@@ -276,20 +360,22 @@ const DashboardPage: FC = () => {
                     )}
                   />
                 </div>
-                <div className="flex justify-center gap-10">
+                <div className="flex justify-center gap-10 pt-2">
                   <Button
                     variant="bordered"
-                    color="primary"
+                    color={"0" as never}
                     type="reset"
-                    className="w-28 text-primary-500 border-2 border-primary-500 rounded-lg"
+                    className="w-28 text-black border-2 border-black rounded-lg"
+                    onClick={() => form.reset()}
                   >
                     Cancelar
                   </Button>
                   <Button
+                    isLoading={isLoading}
                     variant="solid"
-                    color="primary"
+                    color={"0" as never}
                     type="submit"
-                    className="w-28 rounded-lg"
+                    className="w-28 rounded-lg bg-black text-white"
                   >
                     Guardar
                   </Button>

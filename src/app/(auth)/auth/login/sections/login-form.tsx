@@ -15,6 +15,7 @@ const styles = {
   innerWrapper: "bg-transparent",
   inputWrapper: [
     "shadow-md",
+    "rounded-lg",
     "bg-white/5",
     "backdrop-blur-xl",
     "backdrop-saturate-200",
@@ -28,6 +29,7 @@ const styles = {
 };
 
 const LoginForm: React.FC = () => {
+  const [statusLogin, setStatusLogin] = useState('');
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isLoading, setIsLoading] = useState(false);
   const form = useForm<LoginSchemaType>({
@@ -50,64 +52,66 @@ const LoginForm: React.FC = () => {
     setIsLoading(true);
     console.log(values);
     try {
+      setStatusLogin("");
       const response = await tryLogin(values);
       console.log("Data saved successfully:", response);
 
       if (response.status === 200) {
-        const { token, usuario } = response.data;
+        const { token, userData } = response.data;
 
         Cookies.set("authToken", token, {
           expires: 1, // La cookie expira en 1 día (puedes ajustar este valor)
           secure: process.env.NODE_ENV === "production", // Solo envía cookies a través de HTTPS en producción
-          sameSite: "Strict", // Evita que la cookie sea enviada en solicitudes de terceros
-          path: "/", // La cookie es accesible en toda la aplicación
+          sameSite: "Strict", 
+          path: "/", 
         });
 
-        const userRole = usuario.rol.rol
+        const userRole = userData.rol;
+        const userId = userData.id;
 
         // Guardar en localStorage
         sessionStorage.setItem("authToken", token);
-        sessionStorage.setItem('userRole', userRole)
+        sessionStorage.setItem("userRole", userRole);
+        sessionStorage.setItem("userId", userId);
 
         document.cookie = `authToken=${token}; path=/; secure;`;
-        document.cookie = `userRole=${userRole}; path=/; secure;`
+        document.cookie = `userRole=${userRole}; path=/; secure;`;
 
-        if (userRole === 'ROLE_ADMINISTRATIVO') {
-          const userName = usuario?.datosPersonales.nombre
-          const userApellidoPaterno = usuario.datosPersonales.apellidoPaterno
-          const userApellidoMaterno = usuario.datosPersonales.apellidoMaterno
-          const userFoto = usuario.datosPersonales.foto
+        if (userRole === 1) {
+          const userName = userData?.name;
+          //const userFoto = userData.foto_perfil;
 
-          sessionStorage.setItem('userName', userName)
-          sessionStorage.setItem('userApellidoPaterno', userApellidoPaterno)
-          sessionStorage.setItem('userApellidoMaterno', userApellidoMaterno)
-          sessionStorage.setItem('userFoto', userFoto)
+          sessionStorage.setItem("userName", userName);
+          //sessionStorage.setItem("userFoto", userFoto);
 
-          console.log('Stored User Name:', userName)
-          console.log('Stored User Apellido Paterno:', userApellidoPaterno)
-          console.log('Stored User Apellido Materno:', userApellidoMaterno)
-          console.log('Stored User Foto:', userFoto)
-          router.push('/dashboard')
-        } else if (userRole === 'ROLE_PROFESOR') {
-          const userName = usuario?.datosPersonales.nombre
-          const userApellidoPaterno = usuario.datosPersonales.apellidoPaterno
-          const userApellidoMaterno = usuario.datosPersonales.apellidoMaterno
-          const userFoto = usuario.datosPersonales.foto
+          console.log("Stored User Name:", userName);
+          //console.log("Stored User Foto:", userFoto);
+          router.push("/dashboard");
+        } else if (userRole === 2) {
+          const userName = userData?.name;
+          //const userFoto = userData.foto_perfil;
 
-          sessionStorage.setItem('userName', userName)
-          sessionStorage.setItem('userApellidoPaterno', userApellidoPaterno)
-          sessionStorage.setItem('userApellidoMaterno', userApellidoMaterno)
-          sessionStorage.setItem('userFoto', userFoto)
+          sessionStorage.setItem("userName", userName);
+          //sessionStorage.setItem("userFoto", userFoto);
 
-          console.log('Stored User Name:', userName)
-          console.log('Stored User Apellido Paterno:', userApellidoPaterno)
-          console.log('Stored User Apellido Materno:', userApellidoMaterno)
-          console.log('Stored User Foto:', userFoto)
-          router.push('/dashboard-empleado')
+          console.log("Stored User Name:", userName);
+          //console.log("Stored User Foto:", userFoto);
+          router.push("/dashboard/sections/check");
+        } else if (userRole === 3) {
+          const userName = userData?.name;
+          //const userFoto = userData.foto_perfil;
+
+          sessionStorage.setItem("userName", userName);
+          //sessionStorage.setItem("userFoto", userFoto);
+
+          console.log("Stored User Name:", userName);
+          //console.log("Stored User Foto:", userFoto);
+          router.push("/dashboard-empleado");
         }
       }
     } catch (error) {
       console.error("Error saving data:", error);
+      setStatusLogin("Usuario o contraseña incorrectos");
     } finally {
       setIsLoading(false);
     }
@@ -117,14 +121,14 @@ const LoginForm: React.FC = () => {
     <form
       onSubmit={handleSubmit(onSubmit)}
       method="POST"
-      className="grid grid-cols-1 gap-4"
+      className="grid grid-cols-1 gap-4 gap-y-5"
     >
       <div>
         <Controller
           name="user"
           control={control}
           render={({ field }) => (
-            <div>
+            <div className="pb-5">
               <Input
                 placeholder="Usuario"
                 classNames={styles}
@@ -166,11 +170,12 @@ const LoginForm: React.FC = () => {
         type="submit"
         className="bg-primary-500 text-white rounded-lg"
         radius="sm"
+        isLoading={isLoading}
       >
         Iniciar Sesión
       </Button>
 
-      <p className="text-red-500 text-tiny"></p>
+      <p className="text-red-500 text-tiny text-center pb-5">{statusLogin}</p>
     </form>
   );
 };

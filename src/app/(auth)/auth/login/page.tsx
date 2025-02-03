@@ -10,7 +10,7 @@ const HeroSection: React.FC = () => {
       className="w-full h-screen relative flex items-center justify-center md:h-screen"
       style={{
         background:
-          "linear-gradient(to bottom, rgba(245, 246, 252, 0.60), rgba(245, 246, 252, 0.52)), url(/fondoLogin.jpg) center center/cover no-repeat",
+          "linear-gradient(to bottom, rgba(245, 246, 252, 0.60), rgba(245, 246, 252, 0.52)), url(/fondo.jpg) center center/cover no-repeat",
       }}
     >
       <div className="flex flex-col lg:flex-row justify-between items-center mx-auto max-w-7xl py-12 sm:pt-32 sm:pb-32 gap-y-12">

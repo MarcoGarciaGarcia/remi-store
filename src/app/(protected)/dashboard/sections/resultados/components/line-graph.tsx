@@ -33,14 +33,14 @@ const LineGraph: React.FC = () => {
   const dataValues = [16, 19, 3, 17, 2, 3, 7]
 
   // Define el color de la línea
-  const borderColor = 'rgb(235, 102, 74)' // Amarillo
+  const borderColor = 'rgb(6, 180, 219)' // Amarillo
 
   // Define los datos del gráfico
   const data = {
     labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
     datasets: [
       {
-        label: 'Value',
+        label: 'Flujo',
         data: dataValues,
         borderColor: borderColor, // Color de la línea
         borderWidth: 2, // Grosor de la línea

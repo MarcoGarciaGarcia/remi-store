@@ -1,7 +1,7 @@
 // utils/apiService.ts
 import axios from "axios";
 
-const token = sessionStorage.getItem("token");
+const token = sessionStorage.getItem("authToken");
 // Función para transformar los nombres de los campos
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const transformData = (data: any) => {
@@ -9,7 +9,6 @@ const transformData = (data: any) => {
     name: data.name,
     email: data.email,
     password: data.password,
-    password_confirmation: data.password_confirmation,
     rol: parseInt(data.rol, 10),
   };
 };
@@ -20,8 +19,26 @@ export const workersRegister = async (data: any) => {
   try {
     const transformedData = transformData(data);
     const response = await axios.post(
-      `http://192.168.210.229:8000/api/register`,
+      `${process.env.NEXT_PUBLIC_API_URL}/register`,
       transformedData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    return response;
+  } catch (error) {
+    console.error("Error trying Register:", error);
+    throw error;
+  }
+};
+
+export const getWorkers = async () => {
+  try {
+    const response = await axios.get(
+      `${process.env.NEXT_PUBLIC_API_URL}/getAllUsers`,
       {
         headers: {
           Authorization: `Bearer ${token}`,

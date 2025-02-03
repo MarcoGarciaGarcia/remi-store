@@ -1,4 +1,5 @@
 "use client";
+import { IProducto, IProductos } from "@/schemas/productos-schema";
 import {
   Button,
   Divider,
@@ -10,35 +11,57 @@ import {
   TableHeader,
   TableRow,
 } from "@nextui-org/react";
-import { useState } from "react";
+import axios from "axios";
+import { useEffect, useState } from "react";
 
-interface Producto {
-  id: number;
-  nombre: string;
-  codigo: string;
-  precio: string;
-}
-
-const productos: Producto[] = [
+{
+  /*const productos: Producto[] = [
   { id: 1, nombre: "Cocacola", codigo: "LP1001", precio: "20.00" },
   { id: 2, nombre: "Agua Bonafont 1.5L", codigo: "SP2002", precio: "16.00" },
   { id: 3, nombre: "Cigarros Malboro", codigo: "TB3003", precio: "83.00" },
   { id: 4, nombre: "Red Cola", codigo: "MN4004", precio: "13.00" },
   { id: 5, nombre: "Takis Fuego", codigo: "TC5005", precio: "16.00" },
-];
+];*/
+}
 
 const Ventas: React.FC = () => {
+  const [productos, setProducts] = useState<IProductos>();
+  useEffect(() => {
+    const token = sessionStorage.getItem("authToken");
+    const fetchProducts = async () => {
+      try {
+        const response = await axios.get(
+          `${process.env.NEXT_PUBLIC_API_URL}/getAllProductos`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              Accept: "application/json",
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        setProducts(response.data);
+      } catch (error) {
+        console.error("Error al obtener productos:", error);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
   const [codigoBarras, setCodigoBarras] = useState("");
-  const [listaVentas, setListaVentas] = useState<Producto[]>([]);
+  const [listaVentas, setListaVentas] = useState<IProducto[]>([]);
   const [total, setTotal] = useState(0.0);
   const [subtotal, setSubtotal] = useState(0.0);
   const [isChecked, setIsChecked] = useState(false);
 
   const agregarProducto = () => {
-    const producto = productos.find((p) => p.codigo === codigoBarras);
+    const producto = productos?.data.find(
+      (p) => p.codigo_barras === codigoBarras
+    );
     if (producto) {
       setListaVentas((prevLista) => [...prevLista, producto]);
-      setTotal(total + parseFloat(producto.precio));
+      setTotal(total + parseFloat(producto.precio_venta.toString()));
     } else {
       alert("Producto no encontrado");
     }
@@ -60,9 +83,41 @@ const Ventas: React.FC = () => {
     }
   };
 
+  const handleVenta = () => {
+    const token = sessionStorage.getItem("authToken");
+
+    const ventaData = {
+      id_usuario: parseInt(sessionStorage.getItem("userId") || "0"),
+      total_venta: total,
+      productos: listaVentas.map((venta) => ({
+        id_producto: venta.id_producto,
+        cantidad: 1,
+      })),
+    };
+
+    axios
+      .post(`${process.env.NEXT_PUBLIC_API_URL}/registrarVenta`, ventaData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      })
+      .then((response) => {
+        console.log("Venta realizada con éxito:", response.data);
+        setListaVentas([]);
+        setTotal(0);
+        setSubtotal(0);
+        setIsChecked(false);
+      })
+      .catch((error) => {
+        console.error("Error al realizar la venta:", error);
+      });
+  };
+
   return (
-    <div className="w-[700px] h-auto justify-start border-3 border-primary-500 rounded-lg mr-14">
-      <h1 className="text-center text-primary-500 text-md font-semibold px-5 pt-5">
+    <div className="w-auto h-auto justify-start shadow-lg bg-white rounded-lg mr-14">
+      <h1 className="text-center text-xl text-black text-md font-sans px-5 pt-5">
         Servicio de Ventas
       </h1>
       <Input
@@ -71,7 +126,7 @@ const Ventas: React.FC = () => {
         value={codigoBarras}
         onChange={(e) => setCodigoBarras(e.target.value)}
         onKeyDown={handleKeyDown}
-        className="w-[400px] mb-4 text-black px-5 pt-5"
+        className="w-[400px] mb-2 text-black px-5 pl-10 pt-5 font-sans"
       />
 
       <div className="flex w-full justify-center">
@@ -80,10 +135,10 @@ const Ventas: React.FC = () => {
           className="md:w-[400px] justify-center"
         >
           <TableHeader>
-            <TableColumn className="bg-secondary-500 text-primary-500 text-center">
+            <TableColumn className="bg-black text-white rounded-s-lg text-center font-sans">
               Nombre
             </TableColumn>
-            <TableColumn className="bg-secondary-500 text-primary-500 text-center">
+            <TableColumn className="bg-black text-white rounded-e-lg text-center font-sans">
               Precio
             </TableColumn>
           </TableHeader>
@@ -91,10 +146,10 @@ const Ventas: React.FC = () => {
             {listaVentas.map((producto, index) => (
               <TableRow key={index}>
                 <TableCell className="text-black text-start">
-                  {producto.nombre}
+                  {producto.nombre_producto}
                 </TableCell>
                 <TableCell className="text-black text-center">
-                  ${producto.precio}
+                  ${producto.precio_venta}
                 </TableCell>
               </TableRow>
             ))}
@@ -105,18 +160,21 @@ const Ventas: React.FC = () => {
         <Divider></Divider>
       </div>
       <div className="w-full px-10 pb-5">
-        <p className="text-black text-tiny py-3">
+        <p className="text-black font-semibold text-tiny py-3 font-sans">
           En caso de pagar con tarjeta, llena el siguiente check para aplicar el
           porcentaje correspondiente
         </p>
         <input
           id="myCheckbox"
           type="checkbox"
-          className="form-checkbox text-primary-600 border-gray-300 rounded focus:ring-primary-500"
+          className="form-checkbox text-black border-gray-300 rounded focus:ring-black"
           checked={isChecked}
           onChange={OnCreditCard}
         ></input>
-        <label htmlFor="myCheckbox" className="text-black text-tiny ml-2">
+        <label
+          htmlFor="myCheckbox"
+          className="text-black font-sans text-tiny ml-2"
+        >
           Pago con tarjeta
         </label>
       </div>
@@ -130,16 +188,19 @@ const Ventas: React.FC = () => {
       </div>
       <div className="flex justify-end w-full mx-10 py-6 pr-20 gap-5">
         <Button
-          className="text-primary-500 rounded-lg"
+          className="text-black border-1 border-black rounded-lg"
           color="primary"
+          onClick={() => setListaVentas([])}
           variant="bordered"
         >
           Cancelar
         </Button>
         <Button
-          className="text-white rounded-lg"
-          color="primary"
+          className="text-white bg-black rounded-lg"
+          color={"" as never}
           variant="solid"
+          type="submit"
+          onClick={handleVenta}
         >
           Vender
         </Button>

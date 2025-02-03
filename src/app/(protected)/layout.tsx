@@ -6,14 +6,13 @@ interface ILayoutDashboardProps {
 }
 const LayoutDashboard: React.FC<ILayoutDashboardProps> = ({ children }) => {
   return (
-    <section className="bg-white">
+    <section className="bg-transparent">
       <div></div>
-      <div className="block lg:ml-[0px]">
-      <SidebarDesktop />
-      <HeaderDashboard />{" "}
+      <div className="block lg:ml-[0px] bg-gradient-to-r from-pink-50 to-slate-100">
+        <SidebarDesktop />{" "}
         {/*Este componente es para pantallas md hacia arriba*/}
-        
-        <div className="pt-4 pb-16 px-3 !overflow-hidden lg:ml-28 md:ml-0 h-full ml-[200px] bg-white">
+        <div className="h-full pt-4 pb-16 px-3x !overflow-hidden lg:ml-[180px] md:ml-0 ml-[200px]">
+          <HeaderDashboard />
           {children}
         </div>
         {/*<footer className="py-12 px-8 bg-primary-500 grid mt-10">

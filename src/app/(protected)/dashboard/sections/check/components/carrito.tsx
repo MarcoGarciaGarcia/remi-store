@@ -45,19 +45,19 @@ const Ventas: React.FC = () => {
   }, []);
 
   return (
-    <div className="w-full h-screen justify-start rounded-lg mr-14 bg-clip-padding backdrop-filter backdrop-blur-xl bg-opacity-60 border border-opacity-20">
-      <h1 className="text-center text-white text-md font-semibold px-5 pt-5">
-        Registra tu Asistenciasss
+    <div className="w-full h-auto justify-start rounded-lg bg-white shadow-lg">
+      <h1 className="text-center text-black text-md font-semibold px-5 pt-5">
+        Registra tu Asistencia
       </h1>
       <div className="grid justify-center w-full mx-10 py-6 pr-20 gap-5">
-        <h3 className="text-white font-bold text-6xl text-center">{time}</h3>
-        <label className="font-light text-sm text-white text-center">
+        <h3 className="text-black font-bold text-6xl text-center">{time}</h3>
+        <label className="font-light text-sm text-black text-center">
           {date}
         </label>
         <Button
-          className="text-primary-500 font-semibold bg-white rounded-lg w-72"
-          color="primary"
-          variant="ghost"
+          className="text-white font-semibold bg-black rounded-lg w-72"
+          color={"" as never}
+          variant={"" as never}
         >
           Entrada
         </Button>
