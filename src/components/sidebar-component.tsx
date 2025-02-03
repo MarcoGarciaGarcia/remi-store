@@ -137,7 +137,7 @@ const SidebarDesktop: React.FC = () => {
                 <Tooltip
                   content={title}
                   placement="right"
-                  color={"0" as any}
+                  color={"0" as never}
                   className="bg-white text-primary-800 font-light p-2 rounded-lg"
                 >
                   <Link

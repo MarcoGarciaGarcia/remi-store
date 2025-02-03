@@ -1,6 +1,6 @@
 "use client";
 import { getAllProviders } from "@/apis/api-proveedores";
-import { IProveedor, IProveedores } from "@/interfaces/proveedores";
+import { IProveedor } from "@/interfaces/proveedores";
 import {
   Card,
   CardBody,

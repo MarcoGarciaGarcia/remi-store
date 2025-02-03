@@ -1,4 +1,5 @@
 // utils/apiService.ts
+import { IProducto, IProductos } from "@/schemas/productos-schema";
 import axios from "axios";
 
 const token = sessionStorage.getItem("authToken");
@@ -35,7 +36,7 @@ export const workersRegister = async (data: any) => {
   }
 };
 
-const transformDataProducts = (data: any) => {
+const transformDataProducts = (data: IProducto) => {
   return {
     nombre_producto: data.nombre_producto,
     codigo_barras: data.codigo_barras,
@@ -43,7 +44,7 @@ const transformDataProducts = (data: any) => {
     precio_unitario: data.precio_unitario,
     precio_venta: data.precio_venta,
     stock: data.stock,
-    id_proveedor: data.id_proveedor,
+    id_proveedor: data.proveedor,
     estado: data.estado,
   };
 };
