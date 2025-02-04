@@ -7,7 +7,6 @@ import { MoveRight } from "lucide-react";
 
 import "swiper/css";
 import { useRouter } from "next/navigation";
-import { TextGenerateEffect } from "@/components/ui/text-generate-effect";
 import { Rubik } from "next/font/google";
 
 const abFont = Rubik({
@@ -70,15 +69,7 @@ const ServicesSection: React.FC = () => {
       <div className="mx-auto max-w-5xl pb-24 sm:pb-5 lg:pt-28 pt-10 ">
         <div className="text-start justify-between flex flex-col lg:flex-row lg:gap-10 gap-3 mx-5 mb-10">
           <div className="w-full md:w-full lg:w-[650px] justify-center items-center md:flex lg:flex grid mt-10">
-            <TextGenerateEffect
-              wordsArray={wordsArray}
-              className="text-4xl font-bold lg:-mb-0 md:-mb-0 -mb-8"
-            />
             <p className="text-4xl font-bold">&nbsp;</p>
-            <TextGenerateEffect
-              wordsArray={wordsArray2}
-              className="text-4xl font-semibold text-primary-50 font-archivo"
-            />
           </div>
           <div className="w-full lg:w-[700px]">
             <p
