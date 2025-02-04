@@ -1,5 +1,3 @@
-import { ContactForm } from "../components";
-
 const ContactSection: React.FC = () => {
   return (
     <section id="information" className="overflow-hidden bg-white">
@@ -132,9 +130,7 @@ const ContactSection: React.FC = () => {
             </div>
           </dl>
         </div>
-        <div className="px-8 lg:px-24 py-16 lg:flex lg:justify-items-center lg:flex-col lg:items-center">
-          <ContactForm />
-        </div>
+        <div className="px-8 lg:px-24 py-16 lg:flex lg:justify-items-center lg:flex-col lg:items-center"></div>
         <div className="px-6 block lg:hidden mb-16 -mt-12">
           <dl className="mt-10 max-w-xl space-y-5 leading-5 text-gray-600 lg:max-w-none text-sm">
             <div className="relative pl-9 ">

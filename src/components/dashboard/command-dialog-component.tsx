@@ -11,17 +11,15 @@ import {
   User,
 } from "lucide-react";
 
+import { Button, CommandDialog } from "@/components/ui";
 import {
-  Button,
-  CommandDialog,
   CommandEmpty,
   CommandGroup,
   CommandInput,
   CommandItem,
   CommandList,
   CommandSeparator,
-  CommandShortcut,
-} from "@/components/ui";
+} from "cmdk";
 
 const CommandDialogDemo: React.FC = () => {
   const [open, setOpen] = useState(false);
@@ -91,17 +89,14 @@ const CommandDialogDemo: React.FC = () => {
               <CommandItem>
                 <User className="mr-2 h-4 w-4" />
                 <span>Profile</span>
-                <CommandShortcut>⌘P</CommandShortcut>
               </CommandItem>
               <CommandItem>
                 <CreditCard className="mr-2 h-4 w-4" />
                 <span>Billing</span>
-                <CommandShortcut>⌘B</CommandShortcut>
               </CommandItem>
               <CommandItem>
                 <Settings className="mr-2 h-4 w-4" />
                 <span>Settings</span>
-                <CommandShortcut>⌘S</CommandShortcut>
               </CommandItem>
             </CommandGroup>
           </CommandList>
