@@ -50,20 +50,6 @@ const ServicesSection: React.FC = () => {
     setService(id); // Actualiza el servicio seleccionado
   };
 
-  const wordsArray = [
-    {
-      text: "Nuestros",
-      className: "text-md",
-    },
-  ];
-
-  const wordsArray2 = [
-    {
-      text: "Servicios",
-      className: "text-md",
-    },
-  ];
-
   return (
     <section id="services" className="overflow-hidden bg-white h-[100vh]">
       <div className="mx-auto max-w-5xl pb-24 sm:pb-5 lg:pt-28 pt-10 ">
