@@ -1,15 +1,17 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import Image from "next/image";
 import { Button, User } from "@nextui-org/react";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 
 const HeaderDashboard: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
+  const [name, setName] = useState("");
 
-  const name = sessionStorage.getItem("userName");
+  useEffect(() => {
+    setName(sessionStorage.getItem("userName") || "");
+  }, []);
   {
     /*const roleS = sessionStorage.getItem("userRole");
   const [role, setRole] = useState("")
@@ -95,7 +97,7 @@ const HeaderDashboard: React.FC = () => {
           </svg>
         </Button>
 
-        <Button variant={"0" as any} onClick={toggleMenu}>
+        <Button variant={"0" as never} onClick={toggleMenu}>
           <User
             name={name}
             description="Administrador"
