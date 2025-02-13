@@ -25,7 +25,7 @@ const SerchCheck: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
-    const token = sessionStorage.getItem("token");
+    const token = sessionStorage.getItem("authToken");
     const fetchProducts = async () => {
       try {
         const response = await axios.get(
