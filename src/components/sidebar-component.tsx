@@ -69,12 +69,11 @@ const SidebarDesktop: React.FC = () => {
                     placement="right"
                   >
                     <div className="flex items-center w-full">
-                      {/*{Icon && (
-                        <Icon
-                          className="h-6 w-6 mr-2 text-primary-900"
-                          aria-hidden="true"
-                        />
-                      )}*/}
+                      {Icon && (
+                        <span className="h-6 w-6 mr-2 text-primary-900" aria-hidden="true">
+                          <Icon />
+                        </span>
+                      )}
                       <span className="text-xs font-bold text-center leading-tight whitespace-normal break-words w-16 text-primary-900">
                         {title}
                       </span>
@@ -110,8 +109,8 @@ const SidebarDesktop: React.FC = () => {
                             )}
                           >
                             <div className="flex items-center w-full">
-                              {/*{IconChildren && (
-                                <IconChildren
+                              {IconChildren && (
+                                <span
                                   className={cn(
                                     "h-6 w-6 mr-2 shrink-0 text-primary-900",
                                     activeChildren === path &&
@@ -119,8 +118,10 @@ const SidebarDesktop: React.FC = () => {
                                   )}
                                   aria-hidden="true"
                                   aria-label={title}
-                                />
-                              )}*/}
+                                >
+                                  <IconChildren />
+                                </span>
+                              )}
                               <span className="text-primary-900 text-xs font-bold text-center leading-tight whitespace-normal break-words w-full">
                                 {title}
                               </span>
@@ -137,7 +138,7 @@ const SidebarDesktop: React.FC = () => {
                 <Tooltip
                   content={title}
                   placement="right"
-                  color={"0" as any}
+                  color={"0" as never}
                   className="bg-white text-primary-800 font-light p-2 rounded-lg"
                 >
                   <Link
@@ -155,16 +156,18 @@ const SidebarDesktop: React.FC = () => {
                     )}
                   >
                     <div className="flex items-center w-full py-2">
-                     {/* {Icon && (
-                        <Icon
+                      {Icon && (
+                        <span
                           className={
                             active === path
                               ? "h-6 w-6 mr-2 text-white group-hover:text-black"
                               : "h-6 w-6 mr-2 text-black"
                           }
                           aria-hidden="true"
-                        />
-                      )}*/}
+                        >
+                          <Icon />
+                        </span>
+                      )}
                       <span
                         className={
                           active === path
