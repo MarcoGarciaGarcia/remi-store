@@ -83,11 +83,17 @@ const Ventas: React.FC = () => {
     }
   };
 
-  const handleVenta = () => {
-    const token = sessionStorage.getItem("authToken");
+  const [token, setToken] = useState("");
+  const [idUsuario, setIdUsuario] = useState(0)
 
+  useEffect(() => {
+    setToken(sessionStorage.getItem("authToken") ?? "");
+    setIdUsuario(parseInt(sessionStorage.getItem("userId") || "0"))
+  }, []);
+
+  const handleVenta = () => {
     const ventaData = {
-      id_usuario: parseInt(sessionStorage.getItem("userId") || "0"),
+      id_usuario: idUsuario,
       total_venta: total,
       productos: listaVentas.map((venta) => ({
         id_producto: venta.id_producto,

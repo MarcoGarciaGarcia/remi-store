@@ -29,7 +29,7 @@ const SerchCheck: React.FC = () => {
     const fetchProducts = async () => {
       try {
         const response = await axios.get(
-          "http://192.168.210.229:8000/api/getAllProductos",
+          `${process.env.NEXT_PUBLIC_API_URL}/getAllProductos`,
           {
             headers: {
               Authorization: `Bearer ${token}`,

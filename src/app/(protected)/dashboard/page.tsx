@@ -16,11 +16,15 @@ import { NextPage } from "next";
 import { useEffect, useState } from "react";
 
 const DashboardPage: NextPage = () => {
-  const name = sessionStorage.getItem("userName");
+  const [name, setName] = useState("");
   const targetValues = [30, 556, 112.2]; // Array con los valores a animar
   const [currentValues, setCurrentValues] = useState(
     Array(targetValues.length).fill(0)
   );
+
+  useEffect(() => {
+    setName(sessionStorage.getItem("userName") ?? "");
+  }, []);
 
   useEffect(() => {
     const duration = 4000; // Duración total de la animación en milisegundos (8 segundos)
