@@ -23,7 +23,9 @@ const DashboardPage: NextPage = () => {
   );
 
   useEffect(() => {
-    setName(sessionStorage.getItem("userName") ?? "");
+    if (typeof window !== "undefined") {
+      setName(sessionStorage.getItem("userName") ?? "");
+    }
   }, []);
 
   useEffect(() => {
