@@ -1,5 +1,6 @@
 "use client";
 import { productsRegister } from "@/apis/apiRegister";
+import { IProveedores } from "@/interfaces/proveedores";
 import { IProductos } from "@/schemas/productos-schema";
 import { ProductoSchema, ProductoSchemaType } from "@/schemas/products-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -58,6 +59,7 @@ const styles = {
 
 const DashboardPage: FC = () => {
   const [products, setProducts] = useState<IProductos>();
+  const [proveedoresData, setProveedores] = useState<IProveedores>();
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const form = useForm<ProductoSchemaType>({
     resolver: zodResolver(ProductoSchema),
@@ -116,13 +118,37 @@ const DashboardPage: FC = () => {
     fetchProducts();
   }, []);
 
+
+  useEffect(() => {
+    const token = sessionStorage.getItem("authToken");
+    const fetchProveedores = async () => {
+      try {
+        const response = await axios.get(
+          `${process.env.NEXT_PUBLIC_API_URL}/getAllProveedores`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              Accept: "application/json",
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        setProveedores(response.data);
+      } catch (error) {
+        console.error("Error al obtener productos:", error);
+      }
+    };
+
+    fetchProveedores();
+  }, [isOpen]);
+
   return (
     <section className="w-full h-full">
       <Modal
         isOpen={isOpen}
         onOpenChange={onOpenChange}
         backdrop="blur"
-        className="bg-white shadow-xl rounded-xl fixed top-24 h-[500px] p-2"
+        className="bg-white shadow-2xl rounded-xl fixed top-24 h-[660px] p-2 -mt-14"
       >
         <ModalContent>
           {(onClose) => (
@@ -183,7 +209,7 @@ const DashboardPage: FC = () => {
                         render={({ field }) => (
                           <div>
                             <Input
-                              placeholder="Código de barras"
+                              placeholder="Categoría"
                               classNames={styles}
                               {...field}
                               style={{ color: "black" }}
@@ -202,6 +228,7 @@ const DashboardPage: FC = () => {
                         control={control}
                         render={({ field }) => (
                           <div>
+                            <label className="text-gray-400 text-[10px] pb-2">Precio de Compra</label>
                             <Input
                               placeholder="Precio de compra"
                               classNames={styles}
@@ -223,6 +250,7 @@ const DashboardPage: FC = () => {
                         control={control}
                         render={({ field }) => (
                           <div>
+                            <label className="text-gray-400 text-[10px] pb-2">Precio de Venta</label>
                             <Input
                               placeholder="Precio de venta"
                               classNames={styles}
@@ -244,6 +272,7 @@ const DashboardPage: FC = () => {
                         control={control}
                         render={({ field }) => (
                           <div>
+                            <label className="text-gray-400 text-[10px] pb-2">Cantidad de Stock</label>
                             <Input
                               placeholder="Cantidad en stock"
                               classNames={styles}
@@ -260,22 +289,49 @@ const DashboardPage: FC = () => {
                           </div>
                         )}
                       />
+                      <Controller
+                        name="id_proveedor"
+                        control={control}
+                        render={({ field }) => (
+                          <div>
+                            <select
+                              className='py-3 rounded-lg w-full shadow-lg border-1 border-gray-100'
+                              {...field}
+                              value={field.value}
+                              style={{ color: "black" }}
+                              required
+                            >
+                              <option value="">Selecciona un proveedor</option>
+                              {proveedoresData?.data.map((proveedor, index) => (
+                                <option key={index} value={proveedor.id_proveedor}>
+                                  {proveedor.nombre_proveedor}
+                                </option>
+                              ))}
+                            </select>
+                            {errors.id_proveedor?.message && (
+                              <span className="text-red-500 text-xs">
+                                {errors.id_proveedor.message}
+                              </span>
+                            )}
+                          </div>
+                        )}
+                      />
                     </div>
                     <div className="flex justify-center gap-10 mt-4">
                       <Button
                         variant="bordered"
-                        color="primary"
+                        color={"0" as never}
                         type="reset"
                         onPress={onClose}
-                        className="w-28 text-primary-500 border-2 border-primary-500 rounded-lg"
+                        className="w-28 text-black border-2 border-black rounded-lg"
                       >
                         Cancelar
                       </Button>
                       <Button
                         variant="solid"
-                        color="primary"
+                        color={"0" as never}
                         type="submit"
-                        className="w-28 rounded-lg"
+                        className="w-28 rounded-lg text-white bg-black"
                         onPress={onClose}
                       >
                         Guardar

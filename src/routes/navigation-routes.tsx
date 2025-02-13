@@ -14,7 +14,7 @@ export interface IRoute {
   title: string;
   slug: string;
   href: string;
-  icon?: unknown;
+  icon: React.ComponentType;
   active?: string;
   children?: IRoute[];
 }
