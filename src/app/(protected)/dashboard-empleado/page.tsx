@@ -3,9 +3,15 @@ import { Card, CardBody } from "@nextui-org/react";
 import { ShoppingCart } from "lucide-react";
 import { NextPage } from "next";
 import Image from "next/image";
+import { useEffect, useState } from "react";
 
 const DashboardPage: NextPage = () => {
-  const name = sessionStorage.getItem("userName");
+  const [name, setName] = useState('');
+
+  useEffect(() => {
+    setName(sessionStorage.getItem("userName") ?? '');
+  }, []);
+
   return (
     <section className="w-full h-full">
       <div className="grid justify-center">

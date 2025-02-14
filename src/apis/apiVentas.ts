@@ -1,6 +1,11 @@
 import axios from "axios";
 
-const token = sessionStorage.getItem("authToken");
+let token: string | null = "";
+
+if (typeof window !== "undefined") {
+  token = sessionStorage.getItem("authToken");
+}
+
 // Función para transformar los nombres de los campos
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const transformData = (data: any) => {

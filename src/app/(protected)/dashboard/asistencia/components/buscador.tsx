@@ -25,11 +25,11 @@ const SerchCheck: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
-    const token = sessionStorage.getItem("token");
+    const token = sessionStorage.getItem("authToken");
     const fetchProducts = async () => {
       try {
         const response = await axios.get(
-          "http://192.168.210.229:8000/api/getAllProductos",
+          `${process.env.NEXT_PUBLIC_API_URL}/getAllProductos`,
           {
             headers: {
               Authorization: `Bearer ${token}`,

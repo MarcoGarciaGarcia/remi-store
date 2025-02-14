@@ -6,7 +6,6 @@ const Shopping: React.FC = () => {
       <p className="text-4xl p-5 text-black font-sans font-bold text-center">Asistencias</p>
       <div className="w-full pt-10 justify-center flex">
         <SerchCheck />
-        {/*<Ventas></Ventas>*/}
       </div>
     </section>
   );
