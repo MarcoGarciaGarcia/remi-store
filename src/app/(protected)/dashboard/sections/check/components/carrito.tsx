@@ -1,11 +1,14 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { Button } from "@nextui-org/react";
+import axios from "axios";
+import Swal from "sweetalert2";
 
 const Ventas: React.FC = () => {
   // Estado para la hora y la fecha
   const [time, setTime] = useState<string>("");
   const [date, setDate] = useState<string>("");
+  const [token, setToken] = useState("");
 
   // Función para formatear la hora y fecha
   const formatTime = (date: Date) => {
@@ -16,7 +19,7 @@ const Ventas: React.FC = () => {
 
   const formatDate = (date: Date) => {
     const day = date.getDate();
-    const month = date.getMonth() + 1; 
+    const month = date.getMonth() + 1;
     const year = date.getFullYear();
     const weekdays = [
       "Domingo",
@@ -40,9 +43,81 @@ const Ventas: React.FC = () => {
       setDate(formatDate(now));
     }, 1000);
 
+    setToken(sessionStorage.getItem("authToken") ?? "");
+
     // Limpiar el intervalo cuando el componente se desmonte
     return () => clearInterval(intervalId);
   }, []);
+
+  const handleEntrada = () => {
+    const transformedData = {
+      tipo: "entrada",
+    };
+    const registrarEntrada = async () => {
+      try {
+        const response = await axios.post(
+          `${process.env.NEXT_PUBLIC_API_URL}/registrarEntradaSalida`,
+          transformedData,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        Swal.fire({
+          title: "Registro Exitoso!",
+          icon: "success",
+          draggable: true,
+        });
+        return response;
+      } catch (error) {
+        console.log(error);
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Algo inesperado sucedió!",
+          footer: '<a href="#">Why do I have this issue?</a>'
+        });
+      }
+    };
+    registrarEntrada();
+  };
+
+  const handleSalida = () => {
+    const transformedData = {
+      tipo: "salida",
+    };
+    const registrarSalida = async () => {
+      try {
+        const response = await axios.post(
+          `${process.env.NEXT_PUBLIC_API_URL}/registrarEntradaSalida`,
+          transformedData,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        Swal.fire({
+          title: "Registro Exitoso!",
+          icon: "success",
+          draggable: true,
+        });
+        return response;
+      } catch (error) {
+        console.log(error);
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Algo inesperado sucedió!",
+          footer: '<a href="#">Why do I have this issue?</a>',
+        });
+      }
+    };
+    registrarSalida();
+  };
 
   return (
     <div className="w-full h-auto justify-start rounded-lg bg-white shadow-lg">
@@ -58,8 +133,17 @@ const Ventas: React.FC = () => {
           className="text-white font-semibold bg-black rounded-lg w-72"
           color={"" as never}
           variant={"" as never}
+          onPress={handleEntrada}
         >
           Entrada
+        </Button>
+        <Button
+          className="text-white font-semibold bg-black rounded-lg w-72"
+          color={"" as never}
+          variant={"" as never}
+          onPress={handleSalida}
+        >
+          Salida
         </Button>
       </div>
     </div>

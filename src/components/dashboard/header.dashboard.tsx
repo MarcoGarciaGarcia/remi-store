@@ -8,9 +8,11 @@ const HeaderDashboard: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const [name, setName] = useState("");
+  const [role, setRole] = useState("");
 
   useEffect(() => {
     setName(sessionStorage.getItem("userName") || "");
+    setRole(sessionStorage.getItem("userRole") || "");
   }, []);
   {
     /*const roleS = sessionStorage.getItem("userRole");
@@ -100,7 +102,13 @@ const HeaderDashboard: React.FC = () => {
         <Button variant={"0" as never} onClick={toggleMenu}>
           <User
             name={name}
-            description="Administrador"
+            description={
+              role === "1"
+                ? "Administrador"
+                : role === "2"
+                ? "Gestión"
+                : "Empleado"
+            }
             className="text-black w-60"
           />
         </Button>
@@ -114,26 +122,18 @@ const HeaderDashboard: React.FC = () => {
             <div className="flex flex-col items-center gap-2">
               {/* Imagen centrada */}
               <div className="flex items-center justify-center">
-                <Image
-                  src=""
-                  alt="Avatar"
-                  width={80}
-                  height={85}
-                  className="pointer-events-none rounded-full"
-                  style={{
-                    userSelect: "none",
-                    objectFit: "cover",
-                    width: "80px",
-                    height: "80px",
-                  }}
-                />
+                <User name="" description="" className="text-black w-96" />
               </div>
               <span className="lg:text-xl font-bold text-black">{name}</span>
               <span
                 className="block text-xs text-black"
                 style={{ marginTop: "-0.5rem" }}
               >
-                {"role"}
+                {role === "1"
+                  ? "Administrador"
+                  : role === "2"
+                  ? "Gestión"
+                  : "Empleado"}
               </span>
             </div>
             <div className="mt-3 relative">
