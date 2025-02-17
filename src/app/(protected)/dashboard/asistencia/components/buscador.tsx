@@ -12,24 +12,30 @@ import { CheckIcon, Search, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-interface Producto {
-  id_producto: number;
-  nombre_producto: string;
-  codigo_barras: string;
-  precio_unitario: string;
+interface Registro {
+  id_registro: number;
+  tipo: string; // Puede ser "entrada" o "salida"
+  fecha_hora: string;
+  id_usuario: number;
+  nombre_usuario: string;
 }
 
 const SerchCheck: React.FC = () => {
-  const [products, setProducts] = useState<Producto[]>([]);
-  const [filteredProducts, setFilteredProducts] = useState<Producto[]>([]);
+  const [products, setProducts] = useState<Registro[]>([]);
+  const [filteredProducts, setFilteredProducts] = useState<Registro[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     const token = sessionStorage.getItem("authToken");
+    const data = {
+      fecha_inicio: "",
+      fecha_fin: "",
+    };
     const fetchProducts = async () => {
       try {
-        const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}/getAllProductos`,
+        const response = await axios.post(
+          `${process.env.NEXT_PUBLIC_API_URL}/getAllRegistros`,
+          data,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -59,7 +65,7 @@ const SerchCheck: React.FC = () => {
 
   useEffect(() => {
     const filtered = products.filter((products) =>
-      products.nombre_producto.toLowerCase().includes(searchTerm.toLowerCase())
+      products.nombre_usuario.toLowerCase().includes(searchTerm.toLowerCase())
     );
     setFilteredProducts(filtered);
   }, [searchTerm, products]);
@@ -82,16 +88,13 @@ const SerchCheck: React.FC = () => {
         <Table className="w-auto -ml-4 justify-center">
           <TableHeader>
             <TableColumn className="px-6 py-3 rounded-s-lg bg-black text-left text-xs font-semibold text-white uppercase tracking-wider">
-              Día
+              Nombre
             </TableColumn>
             <TableColumn className="px-6 py-3 bg-black text-left text-xs font-semibold text-white uppercase tracking-wider">
-              Hora de entrada
+              Tipo de Registro
             </TableColumn>
             <TableColumn className="px-6 py-3 bg-black text-left text-xs font-semibold text-white uppercase tracking-wider">
-              Hora de salida
-            </TableColumn>
-            <TableColumn className="px-6 py-3 bg-black text-left text-xs font-semibold text-white uppercase tracking-wider">
-              Comentario
+              Fecha y Hora
             </TableColumn>
             <TableColumn className="px-6 py-3 rounded-e-lg bg-black text-left text-xs font-semibold text-white uppercase tracking-wider">
               Status
@@ -100,15 +103,15 @@ const SerchCheck: React.FC = () => {
           <TableBody>
             {filteredProducts.length > 0 ? (
               filteredProducts.map((produc) => (
-                <TableRow key={produc.id_producto}>
+                <TableRow key={produc.id_registro}>
                   <TableCell className="px-6 py-4 text-black">
-                    {produc.nombre_producto}
+                    {produc.nombre_usuario}
                   </TableCell>
                   <TableCell className="px-6 py-4 text-black">
-                    {produc.codigo_barras}
+                    {produc.tipo}
                   </TableCell>
                   <TableCell className="px-6 py-4 text-black">
-                    ${produc.precio_unitario}
+                    ${produc.fecha_hora}
                   </TableCell>
                   <TableCell className="px-6 py-4 text-black">
                     <CheckIcon />
@@ -117,9 +120,6 @@ const SerchCheck: React.FC = () => {
               ))
             ) : (
               <TableRow key={0}>
-                <TableCell className="px-6 py-4 border-b border-gray-200 text-center">
-                  -
-                </TableCell>
                 <TableCell className="px-6 py-4 border-b border-gray-200 text-center">
                   -
                 </TableCell>

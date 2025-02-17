@@ -14,12 +14,18 @@ import {
   DropdownMenu,
   DropdownTrigger,
   Input,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
   Table,
   TableBody,
   TableCell,
   TableColumn,
   TableHeader,
   TableRow,
+  useDisclosure,
 } from "@nextui-org/react";
 import { EllipsisVertical } from "lucide-react";
 import { FC, useEffect, useState } from "react";
@@ -51,6 +57,8 @@ const styles = {
 
 const DashboardPage: FC = () => {
   const [workers, setWorkers] = useState<IWorker>();
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const [iD, setId] = useState<number | undefined>(undefined);
 
   useEffect(() => {
     const GetWorkers = async () => {
@@ -105,8 +113,48 @@ const DashboardPage: FC = () => {
     }
   };
 
+  const handleDetails = (id: number): void => {
+    setId(id);
+  };
+
   return (
     <section className="w-full bg-transparent">
+      <Modal
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+        backdrop="blur"
+        className="bg-white shadow-2xl rounded-xl fixed top-24 h-80 p-2 mt-0"
+      >
+        <ModalContent>
+          {(onClose) => (
+            <>
+              <ModalHeader className="flex flex-col gap-1">
+                <p className="text-lg font-bold text-secondary-900 text-center font-sans">
+                  Detalles del Personal
+                </p>
+              </ModalHeader>
+              <ModalBody>
+                <div className="w-full h-full grid justify-start items-center">
+                  <p className="text-black">Nombre: {workers?.users.find((user) => user.id === iD)?.name}</p><br></br>
+                  <p className="text-black">Rol: {workers?.users.find((user) => user.id === iD)?.rol}</p><br></br>
+                  <p className="text-black">Email: {workers?.users.find((user) => user.id === iD)?.email}</p><br></br>
+                  <p className="text-black">Estatus: {workers?.users.find((user) => user.id === iD)?.activo}</p>
+                </div>
+              </ModalBody>
+              <ModalFooter>
+                <Button
+                  className="bg-black text-white w-20 rounded-lg"
+                  color={"0" as never}
+                  onPress={onClose}
+                >
+                  {" "}
+                  Cerrar
+                </Button>
+              </ModalFooter>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
       <div className="grid justify-center">
         <div className="flex justify-center">
           <h1 className="text-black text-4xl font-bold font-sans pt-5">
@@ -169,6 +217,10 @@ const DashboardPage: FC = () => {
                               <DropdownItem
                                 key="see"
                                 className="text-black font-sans"
+                                onPress={() => {
+                                  onOpen();
+                                  handleDetails(worker.id);
+                                }}
                               >
                                 Ver
                               </DropdownItem>

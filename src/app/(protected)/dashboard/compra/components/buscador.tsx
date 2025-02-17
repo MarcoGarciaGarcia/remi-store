@@ -57,7 +57,7 @@ const SerchProduct: React.FC = () => {
         variant={"" as never}
         aria-label="find"
         className="w-[500px] justify-start text-black font-sans"
-        placeholder="Buscar administrativo"
+        placeholder="Buscar producto"
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
         startContent={
