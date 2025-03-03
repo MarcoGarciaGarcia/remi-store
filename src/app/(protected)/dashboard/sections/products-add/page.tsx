@@ -67,14 +67,14 @@ const DashboardPage: FC = () => {
     onOpenChange: onOpenChange1,
   } = useDisclosure();
   const {
-    isOpen: isOpen2,
+    //isOpen: isOpen2,
     onOpen: onOpen2,
-    onOpenChange: onOpenChange2,
+    //onOpenChange: onOpenChange2,
   } = useDisclosure();
   const {
-    isOpen: isOpen3,
+    //isOpen: isOpen3,
     onOpen: onOpen3,
-    onOpenChange: onOpenChange3,
+    //onOpenChange: onOpenChange3,
   } = useDisclosure();
   const form = useForm<ProductoSchemaType>({
     resolver: zodResolver(ProductoSchema),
