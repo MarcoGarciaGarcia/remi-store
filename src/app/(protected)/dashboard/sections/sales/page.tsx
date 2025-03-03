@@ -51,10 +51,10 @@ const DashboardPage: FC = () => {
   };
 
   return (
-    <section className="w-full h-screen">
+    <section className="w-full h-screen lg:px-0 px-2">
       <div className="grid justify-center">
         <div className="flex justify-center">
-          <h1 className="text-black text-4xl font-sans font-bold pt-5">
+          <h1 className="text-black text-4xl font-sans font-bold lg:pt-6 pt-16">
             Gestión de Ventas
           </h1>
         </div>
@@ -175,7 +175,7 @@ const DashboardPage: FC = () => {
         </form>
         <Table
           aria-label="Example static collection table"
-          className="rounded-lg mt-4 w-auto lg:w-[600px]"
+          className="rounded-lg mt-4 lg:w-[600px] w-full"
         >
           <TableHeader className="rounded-lg">
             <TableColumn className="bg-black rounded-s-lg text-white text-center">

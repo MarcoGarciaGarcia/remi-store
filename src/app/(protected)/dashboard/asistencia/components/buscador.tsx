@@ -71,13 +71,13 @@ const SerchCheck: React.FC = () => {
   }, [searchTerm, products]);
 
   return (
-    <div className="w-full pl-10 justify-center">
-      <div className="p-10 bg-white shadow-lg rounded-lg mx-16">
+    <div className="w-full lg:pl-10 pl-0 justify-center">
+      <div className="lg:p-10 p-4 bg-white shadow-lg rounded-lg lg:mx-16 mx-4">
         <Input
           type="text"
           variant={"" as never}
           aria-label="find"
-          className="w-96 justify-start rounded-lg shadow-md bg-white text-black mb-3"
+          className="lg:w-96 w-full justify-start rounded-lg shadow-md bg-white text-black mb-3"
           placeholder="Buscar por nombre"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
@@ -85,18 +85,18 @@ const SerchCheck: React.FC = () => {
             <Search className="text-2xl text-gray-300 pointer-events-none flex-shrink-0 mr-2" />
           }
         />
-        <Table className="w-auto -ml-4 justify-center">
+        <Table className="lg:w-auto w-full lg:-ml-4 -ml-0 justify-center">
           <TableHeader>
-            <TableColumn className="px-6 py-3 rounded-s-lg bg-black text-left text-xs font-semibold text-white uppercase tracking-wider">
+            <TableColumn className="lg:px-6 px-0 py-3 rounded-s-lg bg-black text-center text-xs font-semibold text-white uppercase tracking-wider">
               Nombre
             </TableColumn>
-            <TableColumn className="px-6 py-3 bg-black text-left text-xs font-semibold text-white uppercase tracking-wider">
-              Tipo de Registro
+            <TableColumn className="lg:px-6 px-0 py-3 bg-black text-center text-xs font-semibold text-white uppercase tracking-wider">
+              Registro
             </TableColumn>
-            <TableColumn className="px-6 py-3 bg-black text-left text-xs font-semibold text-white uppercase tracking-wider">
-              Fecha y Hora
+            <TableColumn className="lg:px-6 px-0 py-3 bg-black text-center text-xs font-semibold text-white uppercase tracking-wider">
+              Horario
             </TableColumn>
-            <TableColumn className="px-6 py-3 rounded-e-lg bg-black text-left text-xs font-semibold text-white uppercase tracking-wider">
+            <TableColumn className="lg:px-6 px-0 py-3 rounded-e-lg bg-black text-center pr-4 text-xs font-semibold text-white uppercase tracking-wider">
               Status
             </TableColumn>
           </TableHeader>
@@ -104,32 +104,32 @@ const SerchCheck: React.FC = () => {
             {filteredProducts.length > 0 ? (
               filteredProducts.map((produc) => (
                 <TableRow key={produc.id_registro}>
-                  <TableCell className="px-6 py-4 text-black">
+                  <TableCell className="lg:px-6 px-0 py-4 text-black">
                     {produc.nombre_usuario}
                   </TableCell>
-                  <TableCell className="px-6 py-4 text-black">
+                  <TableCell className="lg:px-6 px-0 py-4 text-black">
                     {produc.tipo}
                   </TableCell>
-                  <TableCell className="px-6 py-4 text-black">
+                  <TableCell className="lg:px-6 px-0 py-4 text-[10px] lg:text-md text-black">
                     ${produc.fecha_hora}
                   </TableCell>
-                  <TableCell className="px-6 py-4 text-black">
+                  <TableCell className="lg:px-6 px-0 py-4 text-center pl-4 lg:pl-0 text-black">
                     <CheckIcon />
                   </TableCell>
                 </TableRow>
               ))
             ) : (
               <TableRow key={0}>
-                <TableCell className="px-6 py-4 border-b border-gray-200 text-center">
+                <TableCell className="lg:px-6 px-0 py-4 border-b border-gray-200 text-center">
                   -
                 </TableCell>
-                <TableCell className="px-6 py-4 border-b border-gray-200 text-center text-gray-500">
+                <TableCell className="lg:px-6 px-0 py-4 border-b border-gray-200 text-center text-gray-500">
                   No hay datos disponibles
                 </TableCell>
-                <TableCell className="px-6 py-4 border-b border-gray-200 text-center">
+                <TableCell className="lg:px-6 px-0 py-4 border-b border-gray-200 text-center">
                   -
                 </TableCell>
-                <TableCell className="px-6 py-4 border-b border-gray-200 text-center">
+                <TableCell className="lg:px-6 px-0 py-4 border-b border-gray-200 text-center">
                   <CheckIcon className="text-pink-300" />
                   <X className="text-black"></X>
                 </TableCell>

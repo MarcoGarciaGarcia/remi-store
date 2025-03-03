@@ -109,10 +109,14 @@ const DashboardPage: FC = () => {
   }, [searchTerm, products]);
 
   const handleDetails = (id: number): void => {
+    if (!products || products.length === 0) {
+      console.log("Products no está cargado aún.");
+      return;
+    }
+
     setId(id);
-    setRegistros(
-      products?.find((user) => user.id_ventas === iD)?.detalles ?? []
-    );
+    const num = products.find((user) => user.id_ventas === id)?.detalles ?? [];
+    setRegistros(num);
   };
 
   return (
@@ -128,7 +132,7 @@ const DashboardPage: FC = () => {
             <>
               <ModalHeader className="flex flex-col gap-1">
                 <p className="text-lg font-bold text-secondary-900 text-center font-sans">
-                  Detalles del Personal
+                  Detalles de la compra
                 </p>
               </ModalHeader>
               <ModalBody>
@@ -141,10 +145,10 @@ const DashboardPage: FC = () => {
                     }
                   </p>
                   <br></br>
-                  <div className="h-96 w-full rounded-xl border-1 border-solid border-gray-300 p-5 overflow-y-auto">
-                    {registros.map((registro, index) => (
+                  <div className="h-96 w-96 rounded-xl border-1 border-solid border-gray-300 p-5 overflow-y-auto">
+                    {registros.map((registro) => (
                       <div
-                        key={index}
+                        key={registro.nombre_producto + registro.id_proveedor}
                         className="shadow-lg rounded-lg my-5 px-10 py-5"
                       >
                         <p className="text-black">
@@ -187,12 +191,12 @@ const DashboardPage: FC = () => {
       </Modal>
       <div className="grid justify-center">
         <div className="flex justify-center">
-          <h1 className="text-black text-4xl font-bold font-sans mb-5">
-            Gestión Financiera
+          <h1 className="text-black lg:text-4xl text-2xl font-bold font-sans mb-5 lg:mt-0 mt-16">
+            Gestión de Ventas
           </h1>
         </div>
-        <div className="w-full pl-10 justify-center">
-          <div className="p-10 w-[650px] bg-white shadow-lg rounded-lg mx-16">
+        <div className="w-full lg:pl-10 pl-0 justify-center">
+          <div className="lg:p-10 p-4 py-8 lg:w-[650px] w-full bg-white shadow-lg rounded-lg lg:mx-16 mx-0">
             <div className="mb-5">
               <Button
                 className={`rounded-s-lg border-gray-200 border-1 border-solid ${
@@ -221,17 +225,17 @@ const DashboardPage: FC = () => {
                   {info?.message}
                 </p>
                 <div className="flex my-2">
-                  <p className="font-bold text-black">
+                  <p className="font-bold text-black text-md">
                     Inversión Total: &nbsp;
                   </p>
                   <p className="text-black">$ {info?.inversion_total}</p>
                 </div>
                 <div className="flex my-2">
-                  <p className="font-bold text-black">Total de Venta:&nbsp; </p>
+                  <p className="font-bold text-black text-md">Total de Venta:&nbsp; </p>
                   <p className="text-black">$ {info?.total_venta}</p>
                 </div>
                 <div className="flex my-2">
-                  <p className="font-bold text-black">
+                  <p className="font-bold text-black text-md">
                     Total de la ganancia:&nbsp;{" "}
                   </p>
                   <p className="text-black">$ {info?.ganancia}</p>
@@ -243,7 +247,7 @@ const DashboardPage: FC = () => {
                   type="text"
                   variant={"" as never}
                   aria-label="find"
-                  className="w-96 justify-start rounded-lg shadow-md bg-white text-black mb-3"
+                  className="lg:w-96 w-full justify-start rounded-lg shadow-md bg-white text-black mb-3"
                   placeholder="Buscar por nombre"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
@@ -251,18 +255,18 @@ const DashboardPage: FC = () => {
                     <Search className="text-2xl text-gray-300 pointer-events-none flex-shrink-0 mr-2" />
                   }
                 />
-                <Table className="w-auto -ml-4 justify-center">
+                <Table className="lg:w-auto w-full lg:-ml-4 -ml-0 justify-center">
                   <TableHeader>
-                    <TableColumn className="px-6 py-3 rounded-s-lg bg-black text-left text-xs font-semibold text-white uppercase tracking-wider">
+                    <TableColumn className="lg:px-6 px-0 py-3 rounded-s-lg bg-black text-center lg:text-xs text-[10px] font-semibold text-white uppercase tracking-wider">
                       Empleado
                     </TableColumn>
-                    <TableColumn className="px-6 py-3 bg-black text-left text-xs font-semibold text-white uppercase tracking-wider">
-                      Fecha de Venta
+                    <TableColumn className="lg:px-6 px-0 py-3 bg-black text-center lg:text-xs text-[10px] font-semibold text-white uppercase tracking-wider">
+                      Fecha
                     </TableColumn>
-                    <TableColumn className="px-6 py-3 bg-black text-left text-xs font-semibold text-white uppercase tracking-wider">
-                      Total de venta
+                    <TableColumn className="lg:px-6 px-0 py-3 bg-black text-center lg:text-xs text-[10px] font-semibold text-white uppercase tracking-wider">
+                      Total
                     </TableColumn>
-                    <TableColumn className="px-6 py-3 rounded-e-lg bg-black text-left text-xs font-semibold text-white uppercase tracking-wider">
+                    <TableColumn className="lg:px-6 px-0 py-3 rounded-e-lg bg-black text-center lg:text-xs text-[10px] font-semibold text-white uppercase tracking-wider">
                       Opciones
                     </TableColumn>
                   </TableHeader>
@@ -270,23 +274,23 @@ const DashboardPage: FC = () => {
                     {filteredProducts.length > 0 ? (
                       filteredProducts.map((produc) => (
                         <TableRow key={produc.id_ventas}>
-                          <TableCell className="px-6 py-4 text-black">
+                          <TableCell className="lg:px-6 px-0 py-4 text-black lg:text-xs text-[12px]">
                             {produc.nombre_usuario}
                           </TableCell>
-                          <TableCell className="px-6 py-4 text-black">
+                          <TableCell className="lg:px-6 px-0 py-4 text-black lg:text-xs text-[12px]">
                             {produc.fecha_venta}
                           </TableCell>
-                          <TableCell className="px-6 py-4 text-black text-center">
+                          <TableCell className="lg:px-6 px-0 py-4 text-black text-center lg:text-xs text-[12px]">
                             ${produc.total_bruto_grupo}
                           </TableCell>
-                          <TableCell className="px-6 py-4 text-black">
+                          <TableCell className="lg:px-6 px-0 py-4 text-black lg:text-xs text-[12px]">
                             <Button
                               color={"0" as never}
                               key="see"
                               className="text-black font-sans"
                               onPress={() => {
-                                onOpen();
                                 handleDetails(produc.id_ventas);
+                                onOpen();
                               }}
                             >
                               + Detalle
@@ -296,16 +300,16 @@ const DashboardPage: FC = () => {
                       ))
                     ) : (
                       <TableRow key={0}>
-                        <TableCell className="px-6 py-4 border-b border-gray-200 text-center">
+                        <TableCell className="lg:px-6 px-0 py-4 border-b border-gray-200 text-center">
                           -
                         </TableCell>
-                        <TableCell className="px-6 py-4 border-b border-gray-200 text-center text-gray-500">
+                        <TableCell className="lg:px-6 px-0 py-4 border-b border-gray-200 text-center text-gray-500">
                           No hay datos disponibles
                         </TableCell>
-                        <TableCell className="px-6 py-4 border-b border-gray-200 text-center">
+                        <TableCell className="lg:px-6 px-0 py-4 border-b border-gray-200 text-center">
                           -
                         </TableCell>
-                        <TableCell className="px-6 py-4 border-b border-gray-200 text-center">
+                        <TableCell className="lg:px-6 px-0 py-4 border-b border-gray-200 text-center">
                           <CheckIcon className="text-pink-300" />
                           <X className="text-black"></X>
                         </TableCell>

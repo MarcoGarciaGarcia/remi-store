@@ -121,7 +121,7 @@ const Ventas: React.FC = () => {
 
   return (
     <div className="w-full h-auto justify-start rounded-lg bg-white shadow-lg">
-      <h1 className="text-center text-black text-md font-semibold px-5 pt-5">
+      <h1 className="text-center text-black text-md font-semibold px-5 lg:pt-5 pt-16">
         Registra tu Asistencia
       </h1>
       <div className="grid justify-center w-full mx-10 py-6 pr-20 gap-5">
