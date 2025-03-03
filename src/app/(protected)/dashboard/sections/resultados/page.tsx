@@ -12,10 +12,10 @@ import LineGraph from "./components/line-graph";
 const PagosSection: React.FC = () => {
   return (
     <section className="h-screen">
-      <h1 className="text-4xl font-sans text-center mt-5 text-black font-bold">
+      <h1 className="lg:text-4xl text-xl font-sans text-center lg:mt-6 text-black font-bold mt-16 mb-4">
         Gestión de pagos
       </h1>
-      <div className="flex gap-8 w-full -mt-12">
+      <div className="flex gap-8 w-full lg:-mt-12 mt-0">
         <Swiper
           modules={[Navigation, Pagination]}
           spaceBetween={30}

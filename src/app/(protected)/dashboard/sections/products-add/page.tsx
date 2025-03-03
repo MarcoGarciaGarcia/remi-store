@@ -31,6 +31,7 @@ import axios from "axios";
 import { EllipsisVertical } from "lucide-react";
 import { FC, useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
+import Swal from "sweetalert2";
 
 const styles = {
   label: ["group-data-[filled-within=true]:text-black"],
@@ -60,17 +61,31 @@ const styles = {
 const DashboardPage: FC = () => {
   const [products, setProducts] = useState<IProductos>();
   const [proveedoresData, setProveedores] = useState<IProveedores>();
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const {
+    isOpen: isOpen1,
+    onOpen: onOpen1,
+    onOpenChange: onOpenChange1,
+  } = useDisclosure();
+  const {
+    //isOpen: isOpen2,
+    onOpen: onOpen2,
+    //onOpenChange: onOpenChange2,
+  } = useDisclosure();
+  const {
+    //isOpen: isOpen3,
+    onOpen: onOpen3,
+    //onOpenChange: onOpenChange3,
+  } = useDisclosure();
   const form = useForm<ProductoSchemaType>({
     resolver: zodResolver(ProductoSchema),
     defaultValues: {
-      id_proveedor: 0,
+      id_proveedor: "",
       nombre_producto: "",
       codigo_barras: "",
       categoria: "",
-      precio_unitario: 0,
-      precio_venta: 0,
-      stock: 0,
+      precio_unitario: "",
+      precio_venta: "",
+      stock: "",
       estado: 1,
     },
   });
@@ -87,10 +102,17 @@ const DashboardPage: FC = () => {
       const response = await productsRegister(values);
       console.log("Data saved successfully:", response);
 
-      if (response.status === 200) {
+      if (response.status === 201) {
+        window.location.reload();
       }
     } catch (error) {
       console.error("Error saving data:", error);
+      Swal.fire({
+        title: "Error",
+        text: "Un error inesperado ocurrió, verifique si el producto ya existe",
+        icon: "error",
+      });
+      form.reset();
     } finally {
     }
   };
@@ -118,7 +140,6 @@ const DashboardPage: FC = () => {
     fetchProducts();
   }, []);
 
-
   useEffect(() => {
     const token = sessionStorage.getItem("authToken");
     const fetchProveedores = async () => {
@@ -140,18 +161,18 @@ const DashboardPage: FC = () => {
     };
 
     fetchProveedores();
-  }, [isOpen]);
+  }, [isOpen1]);
 
   return (
-    <section className="w-full h-full">
+    <section className="w-full h-auto">
       <Modal
-        isOpen={isOpen}
-        onOpenChange={onOpenChange}
+        isOpen={isOpen1}
+        onOpenChange={onOpenChange1}
         backdrop="blur"
-        className="bg-white shadow-2xl rounded-xl fixed top-24 h-[660px] p-2 -mt-14"
+        className="bg-white shadow-2xl rounded-xl fixed top-24 h-auto p-2 -mt-14"
       >
         <ModalContent>
-          {(onClose) => (
+          {(onClose1) => (
             <>
               <ModalHeader className="flex flex-col gap-1">
                 <p className="text-lg font-normal text-secondary-900 text-center font-sans">
@@ -228,7 +249,9 @@ const DashboardPage: FC = () => {
                         control={control}
                         render={({ field }) => (
                           <div>
-                            <label className="text-gray-400 text-[10px] pb-2">Precio de Compra</label>
+                            <label className="text-gray-400 text-[10px] pb-2">
+                              Precio de Compra
+                            </label>
                             <Input
                               placeholder="Precio de compra"
                               classNames={styles}
@@ -250,7 +273,9 @@ const DashboardPage: FC = () => {
                         control={control}
                         render={({ field }) => (
                           <div>
-                            <label className="text-gray-400 text-[10px] pb-2">Precio de Venta</label>
+                            <label className="text-gray-400 text-[10px] pb-2">
+                              Precio de Venta
+                            </label>
                             <Input
                               placeholder="Precio de venta"
                               classNames={styles}
@@ -272,7 +297,9 @@ const DashboardPage: FC = () => {
                         control={control}
                         render={({ field }) => (
                           <div>
-                            <label className="text-gray-400 text-[10px] pb-2">Cantidad de Stock</label>
+                            <label className="text-gray-400 text-[10px] pb-2">
+                              Cantidad de Stock
+                            </label>
                             <Input
                               placeholder="Cantidad en stock"
                               classNames={styles}
@@ -295,7 +322,7 @@ const DashboardPage: FC = () => {
                         render={({ field }) => (
                           <div>
                             <select
-                              className='py-3 rounded-lg w-full shadow-lg border-1 border-gray-100'
+                              className="py-3 rounded-lg w-full shadow-lg border-1 border-gray-100"
                               {...field}
                               value={field.value}
                               style={{ color: "black" }}
@@ -303,7 +330,10 @@ const DashboardPage: FC = () => {
                             >
                               <option value="">Selecciona un proveedor</option>
                               {proveedoresData?.data.map((proveedor, index) => (
-                                <option key={index} value={proveedor.id_proveedor}>
+                                <option
+                                  key={index}
+                                  value={proveedor.id_proveedor}
+                                >
                                   {proveedor.nombre_proveedor}
                                 </option>
                               ))}
@@ -322,7 +352,7 @@ const DashboardPage: FC = () => {
                         variant="bordered"
                         color={"0" as never}
                         type="reset"
-                        onPress={onClose}
+                        onPress={onClose1}
                         className="w-28 text-black border-2 border-black rounded-lg"
                       >
                         Cancelar
@@ -332,7 +362,6 @@ const DashboardPage: FC = () => {
                         color={"0" as never}
                         type="submit"
                         className="w-28 rounded-lg text-white bg-black"
-                        onPress={onClose}
                       >
                         Guardar
                       </Button>
@@ -347,16 +376,16 @@ const DashboardPage: FC = () => {
       </Modal>
       <div className="grid justify-center">
         <div className="flex justify-center">
-          <h1 className="text-black text-4xl font-bold font-sans pt-5">
+          <h1 className="text-black lg:text-4xl text-xl font-bold font-sans lg:pt-5 pt-16">
             Control de inventario
           </h1>
         </div>
 
-        <div className="flex my-5 ml-60 justify-center">
-          <Card shadow="lg" className="rounded-lg p-5 ml-20 border-none mt-3">
+        <div className="flex my-5 lg:ml-60 ml-0 justify-center">
+          <Card shadow="lg" className="rounded-lg p-5 lg:ml-20 ml-0 border-none mt-3 w-full">
             <CardBody>
               <Button
-                onPress={onOpen}
+                onPress={onOpen1}
                 color={"0" as never}
                 className="text-white bg-black my-4 rounded-lg w-40"
               >
@@ -365,51 +394,51 @@ const DashboardPage: FC = () => {
               <Table
                 removeWrapper
                 aria-label="Example static collection table"
-                className="w-[900px] rounded-lg bg-white"
+                className="lg:w-[900px] w-full rounded-lg bg-white"
               >
                 <TableHeader className="flex justify-center items-center rounded-lg">
                   <TableColumn className="bg-black rounded-s-lg">
-                    <p className="text-white text-center">Producto</p>
+                    <p className="text-white text-center lg:text-[12px] text-[10px]">Producto</p>
                   </TableColumn>
                   <TableColumn className="bg-black justify-center items-center">
-                    <p className="text-white text-center">Código</p>
+                    <p className="text-white text-center lg:text-[12px] text-[10px]">Código</p>
                   </TableColumn>
                   <TableColumn className="bg-black">
-                    <p className="text-white text-center">Precio de compra</p>
+                    <p className="text-white text-center lg:text-[12px] text-[10px]">Precio de compra</p>
                   </TableColumn>
                   <TableColumn className="bg-black justify-center items-center">
-                    <p className="text-white text-center">Precio de venta</p>
+                    <p className="text-white text-center lg:text-[12px] text-[10px]">Precio de venta</p>
                   </TableColumn>
                   <TableColumn className="bg-black">
-                    <p className="text-white text-center">Stock</p>
+                    <p className="text-white text-center lg:text-[12px] text-[10px]">Stock</p>
                   </TableColumn>
                   <TableColumn className="bg-black">
-                    <p className="text-white text-center">Estatus</p>
+                    <p className="text-white text-center lg:text-[12px] text-[10px]">Estatus</p>
                   </TableColumn>
                   <TableColumn className="bg-black justify-center rounded-e-lg items-center">
-                    <p className="text-white text-center">Opciones</p>
+                    <p className="text-white text-center lg:text-[12px] text-[10px]">.</p>
                   </TableColumn>
                 </TableHeader>
                 <TableBody>
                   {products ? (
                     products.data.map((product) => (
                       <TableRow key={product.id_producto}>
-                        <TableCell className="text-secondary-900 text-center">
+                        <TableCell className="text-secondary-900 text-center lg:text-[12px] text-[10px]">
                           {product.nombre_producto}
                         </TableCell>
-                        <TableCell className="text-secondary-900 text-center">
+                        <TableCell className="text-secondary-900 text-center lg:text-[12px] text-[10px]">
                           {product.codigo_barras}
                         </TableCell>
-                        <TableCell className="text-secondary-900 text-center">
+                        <TableCell className="text-secondary-900 text-center lg:text-[12px] text-[10px]">
                           ${product.precio_unitario}
                         </TableCell>
-                        <TableCell className="text-secondary-900 text-center">
+                        <TableCell className="text-secondary-900 text-center lg:text-[12px] text-[10px]">
                           ${product.precio_venta}
                         </TableCell>
-                        <TableCell className="text-secondary-900 text-center">
+                        <TableCell className="text-secondary-900 text-center lg:text-[12px] text-[10px]">
                           {product.stock}
                         </TableCell>
-                        <TableCell className="text-secondary-900 text-center">
+                        <TableCell className="text-secondary-900 text-center lg:text-[12px] text-[10px]">
                           {product.estado === 1 ? (
                             <p className="text-pink-500">Activo</p>
                           ) : (
@@ -417,7 +446,7 @@ const DashboardPage: FC = () => {
                           )}
                         </TableCell>
                         <TableCell className="text-default-300 text-center">
-                          <Dropdown className="w-28 rounded-lg border-1 border-primary-800">
+                          <Dropdown className="w-40 rounded-lg border-1 border-black bg-white">
                             <DropdownTrigger>
                               <Button variant="light">
                                 <EllipsisVertical
@@ -428,23 +457,19 @@ const DashboardPage: FC = () => {
                             </DropdownTrigger>
                             <DropdownMenu aria-label="Static Actions">
                               <DropdownItem
-                                key="see"
-                                className="text-primary-800 font-sans"
-                              >
-                                Ver
-                              </DropdownItem>
-                              <DropdownItem
                                 key="update"
-                                className="text-primary-800 font-sans"
+                                className="text-black font-sans"
+                                onPress={onOpen2}
                               >
-                                Actualizar
+                                Modificar Precios
                               </DropdownItem>
                               <DropdownItem
                                 key="delete"
-                                className="text-secondary-800 font-sans"
+                                className="text-red-500 font-sans"
                                 color="danger"
+                                onPress={onOpen3}
                               >
-                                Dar de baja
+                                Eliminar
                               </DropdownItem>
                             </DropdownMenu>
                           </Dropdown>
@@ -515,7 +540,7 @@ const DashboardPage: FC = () => {
             </CardBody>
           </Card>
 
-          <div className="w-80"></div>
+          <div className="lg:w-80 w-0"></div>
         </div>
       </div>
     </section>

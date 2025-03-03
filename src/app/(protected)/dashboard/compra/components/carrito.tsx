@@ -12,17 +12,9 @@ import {
   TableRow,
 } from "@nextui-org/react";
 import axios from "axios";
+import { X } from "lucide-react";
 import { useEffect, useState } from "react";
-
-{
-  /*const productos: Producto[] = [
-  { id: 1, nombre: "Cocacola", codigo: "LP1001", precio: "20.00" },
-  { id: 2, nombre: "Agua Bonafont 1.5L", codigo: "SP2002", precio: "16.00" },
-  { id: 3, nombre: "Cigarros Malboro", codigo: "TB3003", precio: "83.00" },
-  { id: 4, nombre: "Red Cola", codigo: "MN4004", precio: "13.00" },
-  { id: 5, nombre: "Takis Fuego", codigo: "TC5005", precio: "16.00" },
-];*/
-}
+import Swal from "sweetalert2";
 
 const Ventas: React.FC = () => {
   const [productos, setProducts] = useState<IProductos>();
@@ -84,11 +76,11 @@ const Ventas: React.FC = () => {
   };
 
   const [token, setToken] = useState("");
-  const [idUsuario, setIdUsuario] = useState(0)
+  const [idUsuario, setIdUsuario] = useState(0);
 
   useEffect(() => {
     setToken(sessionStorage.getItem("authToken") ?? "");
-    setIdUsuario(parseInt(sessionStorage.getItem("userId") || "0"))
+    setIdUsuario(parseInt(sessionStorage.getItem("userId") || "0"));
   }, []);
 
   const handleVenta = () => {
@@ -111,6 +103,7 @@ const Ventas: React.FC = () => {
       })
       .then((response) => {
         console.log("Venta realizada con éxito:", response.data);
+        Swal.fire({ title: "Venta", text: "La venta se realizó con éxito", icon: "success" });
         setListaVentas([]);
         setTotal(0);
         setSubtotal(0);
@@ -118,7 +111,14 @@ const Ventas: React.FC = () => {
       })
       .catch((error) => {
         console.error("Error al realizar la venta:", error);
+        Swal.fire({ title: "Venta", text: "Hubo un error, posibles razones: Falta en el stock", icon: "warning" });
       });
+  };
+
+  const eliminarProducto = (index: number) => {
+    const producto = listaVentas[index];
+    setListaVentas((prevLista) => prevLista.filter((_, i) => i !== index));
+    setTotal(total - parseFloat(producto.precio_venta.toString()));
   };
 
   return (
@@ -132,20 +132,23 @@ const Ventas: React.FC = () => {
         value={codigoBarras}
         onChange={(e) => setCodigoBarras(e.target.value)}
         onKeyDown={handleKeyDown}
-        className="w-[400px] mb-2 text-black px-5 pl-10 pt-5 font-sans"
+        className="lg:w-[400px] mb-2 text-black px-5 pl-10 pt-5 font-sans"
       />
 
       <div className="flex w-full justify-center">
         <Table
           aria-label="Lista de ventas"
-          className="md:w-[400px] justify-center"
+          className="lg:w-[400px] w-full justify-center"
         >
           <TableHeader>
             <TableColumn className="bg-black text-white rounded-s-lg text-center font-sans">
               Nombre
             </TableColumn>
-            <TableColumn className="bg-black text-white rounded-e-lg text-center font-sans">
+            <TableColumn className="bg-black text-white text-center font-sans">
               Precio
+            </TableColumn>
+            <TableColumn className="bg-black text-white rounded-e-lg text-center font-sans">
+              &nbsp;
             </TableColumn>
           </TableHeader>
           <TableBody>
@@ -156,6 +159,15 @@ const Ventas: React.FC = () => {
                 </TableCell>
                 <TableCell className="text-black text-center">
                   ${producto.precio_venta}
+                </TableCell>
+                <TableCell className="text-black text-center">
+                  <Button
+                    className="text-black"
+                    isIconOnly
+                    onClick={() => eliminarProducto(index)}
+                  >
+                    <X />
+                  </Button>
                 </TableCell>
               </TableRow>
             ))}

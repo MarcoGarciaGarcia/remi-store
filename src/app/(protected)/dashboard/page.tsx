@@ -73,18 +73,18 @@ const DashboardPage: NextPage = () => {
       <div className="relative z-10 grid justify-center">
         <div className="flex justify-center relative h-20 items-center">
           <div className="absolute inset-0 bg-transparent opacity-100"></div>
-          <h1 className="text-black text-4xl font-bold font-sans animate-typing z-30">
+          <h1 className="text-black lg:text-4xl text-xl font-bold font-sans animate-typing z-30">
             Bienvenido {name}
           </h1>
         </div>
 
-        <div className="my-10 flex gap-14">
-          <Card className="group w-[350px] h-[180px] shadow-xl rounded-2xl hover:scale-105 transition">
+        <div className="lg:my-12 mt-4 lg:flex grid gap-14 lg:px-0 px-4">
+          <Card className="group lg:w-[350px] w-full h-[180px] shadow-xl rounded-2xl hover:scale-105 transition">
             <div className="group-hover:opacity-100 transition absolute inset-0 bg-white opacity-100 backdrop-blur-lg rounded-lg"></div>
             <CardBody className="h-full">
               <div className="flex w-full h-full justify-center items-center">
                 <div className="grid justify-center items-center">
-                  <p className="group-hover:text-primary-900 font-bold text-xl text-[#212529] mb-3">
+                  <p className="group-hover:text-primary-900 font-bold lg:text-xl text-md ml-4 lg:ml:0 text-[#212529] mb-3">
                     Total de ventas de hoy
                   </p>
                   <p className="group-hover:text-primary-900 text-[#212529] text-center text-5xl font-semibold">
@@ -100,7 +100,7 @@ const DashboardPage: NextPage = () => {
               </div>
             </CardBody>
           </Card>
-          <Card className="group w-[350px] h-[180px] shadow-xl rounded-2xl hover:scale-105 transition">
+          <Card className="group lg:w-[350px] w-full h-[180px] shadow-xl rounded-2xl hover:scale-105 transition">
             <div className="group-hover:opacity-100 group-hover:bg-white absolute inset-0 bg-white opacity-100 backdrop-blur-lg rounded-lg"></div>
             <CardBody className="h-full">
               <div className="flex w-full h-full justify-center items-center">
@@ -121,7 +121,7 @@ const DashboardPage: NextPage = () => {
               </div>
             </CardBody>
           </Card>
-          <Card className="group w-[350px] h-[180px] shadow-xl rounded-2xl hover:scale-105">
+          <Card className="group lg:w-[350px] w-full h-[180px] shadow-xl rounded-2xl hover:scale-105 transition-all">
             <div className="group-hover:opacity-100 absolute inset-0 bg-white opacity-100 backdrop-blur-lg rounded-lg"></div>
             <CardBody className="h-full">
               <div className="flex w-full h-full justify-center items-center p-5">
@@ -144,16 +144,16 @@ const DashboardPage: NextPage = () => {
           </Card>
         </div>
 
-        <div className="rounded-lg justify-items-center grid py-8 relative shadow-lg">
+        <div className="rounded-lg justify-items-center grid py-8 relative shadow-lg lg:mt-0 mt-12">
           <div className="absolute inset-0 bg-white opacity-100 backdrop-blur-lg rounded-lg"></div>
           <p className="text-black font-semibold text-2xl text-center z-30">
             Proveedores de hoy
           </p>
-          <div className="flex rounded-lg items-center justify-center my-10">
+          <div className="flex rounded-lg items-center justify-center my-10 scroll-m-5">
             <Table
               removeWrapper
               aria-label="Example static collection table"
-              className="w-[800px] rounded-lg"
+              className="lg:w-[800px] w-full rounded-lg"
             >
               <TableHeader className="flex justify-center items-center rounded-lg">
                 <TableColumn className="bg-pink-100 rounded-s-lg">

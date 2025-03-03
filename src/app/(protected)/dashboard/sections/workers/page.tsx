@@ -1,5 +1,6 @@
 "use client";
 import { getWorkers, workersRegister } from "@/apis/apiRegister";
+import { userDelete } from "@/apis/apiUsers";
 import { IWorker } from "@/interfaces/workers";
 import { WorkersSchema, WorkersSchemaType } from "@/schemas/worker-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -30,6 +31,8 @@ import {
 import { EllipsisVertical } from "lucide-react";
 import { FC, useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
+import Swal from "sweetalert2";
+
 const styles = {
   label: ["group-data-[filled-within=true]:text-black"],
   input: [
@@ -57,7 +60,20 @@ const styles = {
 
 const DashboardPage: FC = () => {
   const [workers, setWorkers] = useState<IWorker>();
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+
+  const {
+    isOpen: isOpen1,
+    onOpen: onOpen1,
+    onOpenChange: onOpenChange1,
+  } = useDisclosure();
+
+  // Segundo modal
+  const {
+    isOpen: isOpen2,
+    onOpen: onOpen2,
+    onOpenChange: onOpenChange2,
+  } = useDisclosure();
+
   const [iD, setId] = useState<number | undefined>(undefined);
 
   useEffect(() => {
@@ -115,13 +131,33 @@ const DashboardPage: FC = () => {
 
   const handleDetails = (id: number): void => {
     setId(id);
+    onOpen1();
+  };
+
+  const handleUpdate = (id: number): void => {
+    setId(id);
+    onOpen2();
+  };
+
+  const deleteUser = async (id: number): Promise<void> => {
+    const response = await userDelete(id);
+    if (response.status === 200) {
+      window.location.reload();
+    } else {
+      Swal.fire({
+        title: "Proceso Incorrecto",
+        text: "Algo salió mal",
+        icon: "error",
+      });
+      onOpenChange2();
+    }
   };
 
   return (
-    <section className="w-full bg-transparent">
+    <section className="w-full bg-transparent lg:px-0 px-2">
       <Modal
-        isOpen={isOpen}
-        onOpenChange={onOpenChange}
+        isOpen={isOpen1}
+        onOpenChange={onOpenChange1}
         backdrop="blur"
         className="bg-white shadow-2xl rounded-xl fixed top-24 h-80 p-2 mt-0"
       >
@@ -135,10 +171,24 @@ const DashboardPage: FC = () => {
               </ModalHeader>
               <ModalBody>
                 <div className="w-full h-full grid justify-start items-center">
-                  <p className="text-black">Nombre: {workers?.users.find((user) => user.id === iD)?.name}</p><br></br>
-                  <p className="text-black">Rol: {workers?.users.find((user) => user.id === iD)?.rol}</p><br></br>
-                  <p className="text-black">Email: {workers?.users.find((user) => user.id === iD)?.email}</p><br></br>
-                  <p className="text-black">Estatus: {workers?.users.find((user) => user.id === iD)?.activo}</p>
+                  <p className="text-black">
+                    Nombre:{" "}
+                    {workers?.users.find((user) => user.id === iD)?.name}
+                  </p>
+                  <br></br>
+                  <p className="text-black">
+                    Rol: {workers?.users.find((user) => user.id === iD)?.rol}
+                  </p>
+                  <br></br>
+                  <p className="text-black">
+                    Email:{" "}
+                    {workers?.users.find((user) => user.id === iD)?.email}
+                  </p>
+                  <br></br>
+                  <p className="text-black">
+                    Estatus:{" "}
+                    {workers?.users.find((user) => user.id === iD)?.activo}
+                  </p>
                 </div>
               </ModalBody>
               <ModalFooter>
@@ -155,13 +205,61 @@ const DashboardPage: FC = () => {
           )}
         </ModalContent>
       </Modal>
+      <Modal
+        isOpen={isOpen2}
+        onOpenChange={onOpenChange2}
+        backdrop="blur"
+        className="bg-white shadow-2xl rounded-xl fixed top-24 h-80 p-2 mt-0"
+      >
+        <ModalContent>
+          {(onClose2) => (
+            <>
+              <ModalHeader className="flex flex-col gap-1">
+                <p className="text-lg font-bold text-secondary-900 text-center font-sans">
+                  Eliminar Empleado
+                </p>
+              </ModalHeader>
+              <ModalBody>
+                <div className="w-full h-full grid justify-start items-center">
+                  <p className="text-black font-bold">
+                    Seguro que quieres eliminar a{" "}
+                    {workers?.users.find((user) => user.id === iD)?.name}?
+                  </p>
+                </div>
+              </ModalBody>
+              <ModalFooter>
+                <Button
+                  className="bg-white text-black w-20 rounded-lg"
+                  color={"0" as never}
+                  onPress={onClose2}
+                >
+                  {" "}
+                  Cerrar
+                </Button>
+                <Button
+                  className="bg-black text-white w-20 rounded-lg"
+                  color={"0" as never}
+                  onPress={() =>
+                    deleteUser(
+                      workers?.users.find((user) => user.id === iD)?.id ?? 25000
+                    )
+                  }
+                >
+                  {" "}
+                  Eliminar
+                </Button>
+              </ModalFooter>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
       <div className="grid justify-center">
         <div className="flex justify-center">
-          <h1 className="text-black text-4xl font-bold font-sans pt-5">
+          <h1 className="text-black lg:text-4xl text-2xl font-bold font-sans lg:pt-5 pt-16">
             Gestión de Empleados
           </h1>
         </div>
-        <div className="flex my-5 ml-60 justify-center">
+        <div className="lg:flex grid my-5 lg:ml-60 ml-0 justify-center">
           <Card
             shadow="lg"
             className="rounded-lg p-5 border-none mt-3 bg-white shadow-lg"
@@ -170,7 +268,7 @@ const DashboardPage: FC = () => {
               <Table
                 removeWrapper
                 aria-label="Example static collection table"
-                className="w-[600px] rounded-lg bg-white"
+                className="lg:w-[600px] w-full rounded-lg bg-white"
               >
                 <TableHeader className="flex justify-center items-center rounded-lg">
                   <TableColumn className="bg-black rounded-s-lg">
@@ -218,7 +316,6 @@ const DashboardPage: FC = () => {
                                 key="see"
                                 className="text-black font-sans"
                                 onPress={() => {
-                                  onOpen();
                                   handleDetails(worker.id);
                                 }}
                               >
@@ -226,16 +323,12 @@ const DashboardPage: FC = () => {
                               </DropdownItem>
                               <DropdownItem
                                 key="update"
-                                className="text-black font-sans"
+                                className="text-red-500 font-sans"
+                                onPress={() => {
+                                  handleUpdate(worker.id);
+                                }}
                               >
-                                Actualizar
-                              </DropdownItem>
-                              <DropdownItem
-                                key="delete"
-                                className="text-black font-sans"
-                                color="danger"
-                              >
-                                Dar de baja
+                                Eliminar
                               </DropdownItem>
                             </DropdownMenu>
                           </Dropdown>
@@ -293,7 +386,7 @@ const DashboardPage: FC = () => {
             </CardBody>
           </Card>
 
-          <Card className="w-[400px] h-[470px] ml-16 bg-white rounded-lg p-8 shadow-lg mt-3">
+          <Card className="lg:w-[400px] w-full h-[470px] lg:ml-16 ml-0 bg-white rounded-lg p-8 shadow-lg mt-3">
             <CardHeader className="flex justify-center">
               <div className="flex justify-center">
                 <p className="text-lg text-black text-center font-bold font-sans">

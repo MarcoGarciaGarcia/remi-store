@@ -132,8 +132,8 @@ const HeaderDashboard: React.FC = () => {
                 {role === "1"
                   ? "Administrador"
                   : role === "2"
-                  ? "Gestión"
-                  : "Empleado"}
+                  ? "Empleado"
+                  : "Gestión"}
               </span>
             </div>
             <div className="mt-3 relative">

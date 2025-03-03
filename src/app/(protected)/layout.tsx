@@ -1,3 +1,4 @@
+import HeaderResponsive from "@/components/dashboard/header-responsive";
 import HeaderDashboard from "@/components/dashboard/header.dashboard";
 import { SidebarDesktop } from "@/components/sidebar-component";
 
@@ -11,8 +12,9 @@ const LayoutDashboard: React.FC<ILayoutDashboardProps> = ({ children }) => {
       <div className="block lg:ml-[0px] bg-gradient-to-r from-zinc-50 to-slate-200">
         <SidebarDesktop />{" "}
         {/*Este componente es para pantallas md hacia arriba*/}
-        <div className="min-h-screen pt-4 pb-16 px-3x !overflow-hidden lg:ml-[180px] md:ml-0 ml-[200px]">
+        <div className="min-h-screen pt-4 pb-16 px-3x !overflow-hidden lg:ml-[180px] md:ml-0 ml-0">
           <HeaderDashboard />
+          <HeaderResponsive></HeaderResponsive>
           {children}
         </div>
         {/*<footer className="py-12 px-8 bg-primary-500 grid mt-10">
