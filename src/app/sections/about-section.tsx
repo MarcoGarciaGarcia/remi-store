@@ -59,7 +59,7 @@ const AboutSection: React.FC = () => {
           <div
             className="w-full h-[350px] lg:w-[500px] lg:h-[350px] rounded-tl-[70px] bg-gray-300 sm:mx-5 bg-cover bg-center"
             style={{
-              backgroundImage: "url(/assets/ejemplo2.jpg)",
+              backgroundImage: "url(/ejemplo2.jpeg)",
             }}
           ></div>
         </div>
