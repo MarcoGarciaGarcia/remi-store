@@ -50,7 +50,7 @@ export function middleware(req: NextRequest) {
     }
 
     // Si el rol no tiene acceso a la ruta, redirigir a una página de acceso denegado
-    return NextResponse.redirect(new URL('/access-denied', req.url));
+    return NextResponse.redirect(new URL('/error', req.url));
   }
 
   if (blockedRoutes.includes(url) && dataS === 'true') {

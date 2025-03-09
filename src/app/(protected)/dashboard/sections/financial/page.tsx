@@ -120,7 +120,7 @@ const DashboardPage: FC = () => {
   };
 
   return (
-    <section className="w-auto h-screen">
+    <section className="w-auto h-auto">
       <Modal
         isOpen={isOpen}
         onOpenChange={onOpenChange}

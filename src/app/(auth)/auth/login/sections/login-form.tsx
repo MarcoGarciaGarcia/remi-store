@@ -8,6 +8,7 @@ import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { tryLogin } from "@/apis/apiLogin";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const styles = {
   label: ["group-data-[filled-within=true]:text-black"],
@@ -29,7 +30,7 @@ const styles = {
 };
 
 const LoginForm: React.FC = () => {
-  const [statusLogin, setStatusLogin] = useState('');
+  const [statusLogin, setStatusLogin] = useState("");
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isLoading, setIsLoading] = useState(false);
   const form = useForm<LoginSchemaType>({
@@ -62,8 +63,8 @@ const LoginForm: React.FC = () => {
         Cookies.set("authToken", token, {
           expires: 1, // La cookie expira en 1 día (puedes ajustar este valor)
           secure: process.env.NODE_ENV === "production", // Solo envía cookies a través de HTTPS en producción
-          sameSite: "Strict", 
-          path: "/", 
+          sameSite: "Strict",
+          path: "/",
         });
 
         const userRole = userData.rol;
@@ -174,7 +175,7 @@ const LoginForm: React.FC = () => {
       >
         Iniciar Sesión
       </Button>
-
+      <Link href="/" className="text-black text-tiny text-center pb-0">Salir del Inicio</Link>
       <p className="text-red-500 text-tiny text-center pb-5">{statusLogin}</p>
     </form>
   );

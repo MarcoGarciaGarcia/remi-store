@@ -51,7 +51,7 @@ const DashboardPage: FC = () => {
   };
 
   return (
-    <section className="w-full h-screen lg:px-0 px-2">
+    <section className="w-full h-auto lg:px-0 px-2">
       <div className="grid justify-center">
         <div className="flex justify-center">
           <h1 className="text-black text-4xl font-sans font-bold lg:pt-6 pt-16">
