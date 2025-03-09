@@ -37,7 +37,7 @@ const ServicesSection: React.FC = () => {
       </div>
       <div className="lg:flex grid justify-center items-center gap-5">
         <SpotlightCard
-          className="custom-spotlight-card bg-white"
+          className="custom-spotlight-card bg-white hover:scale-105 transition-all"
           spotlightColor="rgba(0, 229, 255, 0.2)"
         >
           <div className="p-6 text-black grid items-end justify-center justify-items-center h-80">
@@ -52,7 +52,7 @@ const ServicesSection: React.FC = () => {
           </div>
         </SpotlightCard>
         <SpotlightCard
-          className="custom-spotlight-card bg-white"
+          className="custom-spotlight-card bg-white hover:scale-105 transition-all"
           spotlightColor="rgba(0, 229, 255, 0.2)"
         >
           <div className="p-6 text-black grid items-end justify-center justify-items-center h-80">
@@ -67,7 +67,7 @@ const ServicesSection: React.FC = () => {
           </div>
         </SpotlightCard>
         <SpotlightCard
-          className="custom-spotlight-card bg-white"
+          className="custom-spotlight-card bg-white hover:scale-105 transition-all"
           spotlightColor="rgba(0, 229, 255, 0.2)"
         >
           <div className="p-6 text-black grid items-end justify-center justify-items-center h-80">

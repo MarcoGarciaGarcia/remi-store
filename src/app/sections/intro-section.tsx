@@ -20,7 +20,7 @@ const IntroSection: React.FC = () => {
         //   background: "url(/63666.jpg) top center/cover no-repeat, rgba(0, 0, 0, 0.8)",
         // }}
       >
-        <div className="h-full w-full flex flex-col justify-center items-center text-center mt-32 mx-auto max-w-2xl px-4 lg:flex z-50">
+        <div className="h-full w-full flex flex-col justify-center items-center text-center lg:mt-32 mt-16 mx-auto max-w-2xl px-4 lg:flex z-50">
           <SplitText
             text="Bienvenido a RemmiRS!"
             className="text-5xl font-semibold text-center mb-4"
