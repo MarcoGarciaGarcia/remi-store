@@ -10,6 +10,16 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      keyframes: {
+        gradient: {
+          "0%": { backgroundPosition: "0% 50%" },
+          "50%": { backgroundPosition: "100% 50%" },
+          "100%": { backgroundPosition: "0% 50%" },
+        },
+      },
+      animation: {
+        gradient: "gradient 8s linear infinite",
+      },
       fontFamily: {
         sans: ["Nunito", "sans-serif"],
       },
@@ -48,43 +58,6 @@ const config: Config = {
       },
       width: {
         "banner-cookies": "calc(100% - 40px)",
-      },
-      animation: {
-        spotlight: "spotlight 2s ease .75s 1 forwards",
-        "rotate-left": "rotate-left 4s linear infinite",
-        "rotate-right": "rotate-right 4s linear infinite",
-      },
-      keyframes: {
-        spotlight: {
-          "0%": {
-            opacity: "0",
-            transform: "translate(-72%, -62%) scale(0.5)",
-          },
-          "100%": {
-            opacity: "1",
-            transform: "translate(-50%,-40%) scale(1)",
-          },
-        },
-        "rotate-left": {
-          "0%": {
-            transform: "rotate(0deg)",
-            opacity: "1",
-          },
-          "100%": {
-            transform: "rotate(-360deg)",
-            opacity: "1",
-          },
-        },
-        "rotate-right": {
-          "0%": {
-            transform: "rotate(-180deg)",
-            opacity: "1",
-          },
-          "100%": {
-            transform: "rotate(-540deg)",
-            opacity: "1",
-          },
-        },
       },
     },
   },

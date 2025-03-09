@@ -169,7 +169,7 @@ const DashboardPage: FC = () => {
         isOpen={isOpen1}
         onOpenChange={onOpenChange1}
         backdrop="blur"
-        className="bg-white shadow-2xl rounded-xl fixed top-24 h-auto p-2 -mt-14"
+        className="bg-white shadow-2xl rounded-xl fixed top-24 lg:h-auto h-96 p-2 lg:-mt-14 -mt-0 overflow-y-scroll"
       >
         <ModalContent>
           {(onClose1) => (

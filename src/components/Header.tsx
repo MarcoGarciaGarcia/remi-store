@@ -2,11 +2,20 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import { Button } from "@nextui-org/react";
+import { Rubik } from "next/font/google";
+import GradientText from "./ogl/GradientText";
+import { useRouter } from "next/navigation";
+const abFont = Rubik({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+});
 
 const Header: React.FC = () => {
   const [activeSection, setActiveSection] = useState<string>("");
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -59,98 +68,114 @@ const Header: React.FC = () => {
     >
       <div className="flex lg:justify-start justify-between items-center z-50">
         <Link
-          href="#conocenos"
+          href="/"
           className="text-primary-500 -mt-2 font-bold lg:ml-36 ml-5"
         >
-          <img
-            src="/logoEmpresa.png"
-            alt="Logo Inicial"
-            width={110}
-            height={60}
-          />
+          <h3 className="font-bold text-primary-500 text-xl">RRS</h3>
         </Link>
 
         <div className="hidden md:flex space-x-3 ml-14">
           <Link
-            href="#conocenos"
-            className={`text-md font-bold px-3 py-2 rounded-lg text-white ${
+            href="#inicio"
+            className={`text-md font-bold px-3 py-2 rounded-lg text-primary-700 ${
               activeSection === "conocenos" ? "bg-primary-500" : ""
             }`}
           >
-            Conócenos
+            Inicio
           </Link>
           <Link
-            href="#beneficios"
-            className={`text-md font-bold px-3 py-2 rounded-lg text-white ${
+            href="#general"
+            className={`text-md font-bold px-3 py-2 rounded-lg text-primary-700 ${
               activeSection === "beneficios" ? "bg-primary-500" : ""
             }`}
           >
-            Beneficios
+            Objetivo General
           </Link>
           <Link
-            href="#materiales"
-            className={`text-md font-bold px-3 py-2 rounded-lg text-white ${
+            href="#especifico"
+            className={`text-md font-bold px-3 py-2 rounded-lg text-primary-700 ${
               activeSection === "materiales" ? "bg-primary-500" : ""
             }`}
           >
-            Materiales
-          </Link>
-          <Link
-            href="#productos"
-            className={`text-md font-bold px-3 py-2 rounded-lg text-white ${
-              activeSection === "productos" ? "bg-primary-500" : ""
-            }`}
-          >
-            Productos
+            Objetivos Específicos
           </Link>
         </div>
-
+        <Button
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          color={"0" as any}
+          className={`${abFont.className} border-1 border-primary-600 ml-96 justify-end text-black w-full lg:w-auto rounded-lg font-bold`}
+          onClick={() => {
+            router.push("/auth/login");
+          }}
+        >
+          <GradientText
+            colors={["#155a75", "#67e3f9", "#155a75", "#67e3f9", "#155a75"]}
+            animationSpeed={3}
+            showBorder={false}
+            className="custom-class"
+          >
+            Inicio de sesión
+          </GradientText>
+        </Button>
         {/* Menú Hamburguesa para pantallas pequeñas */}
         <button
-          className="md:hidden text-primary-900 mr-10 -mt-3 text-2xl"
+          className="md:hidden text-primary-900 mr-10 -mt-0 text-2xl"
           onClick={() => setIsMenuOpen(!isMenuOpen)}
         >
           ☰
         </button>
 
         {isMenuOpen && (
-          <div className="md:hidden absolute top-24 right-0 bg-white w-full h-screen z-50 text-start py-4">
-            <Link
-              href="#conocenos"
-              className={`block text-primary-900 py-3 mt-3 ml-5 ${
-                activeSection === "conocenos" ? "text-primary-400" : ""
-              }`}
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Conócenos
-            </Link>
-            <Link
-              href="#beneficios"
-              className={`block text-primary-900 py-3 ml-5 ${
-                activeSection === "beneficios" ? "text-primary-500" : ""
-              }`}
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Beneficios
-            </Link>
-            <Link
-              href="#materiales"
-              className={`block text-primary-900 py-3 ml-5 ${
-                activeSection === "materiales" ? "text-primary-500" : ""
-              }`}
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Materiales
-            </Link>
-            <Link
-              href="#productos"
-              className={`block text-primary-900 py-3 ml-5 ${
-                activeSection === "productos" ? "text-primary-500" : ""
-              }`}
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Productos
-            </Link>
+          <div className="md:hidden absolute top-24 right-0 bg-white w-full h-screen z-50 text-start py-4 grid">
+            <div className="grid gap-4 h-40">
+              <Link
+                href="#inicio"
+                className={`text-md font-bold px-3 py-2 rounded-lg text-primary-700 ${
+                  activeSection === "conocenos" ? "bg-primary-500" : ""
+                }`}
+              >
+                Inicio
+              </Link>
+              <Link
+                href="#general"
+                className={`text-md font-bold px-3 py-2 rounded-lg text-primary-700 ${
+                  activeSection === "beneficios" ? "bg-primary-500" : ""
+                }`}
+              >
+                Objetivo General
+              </Link>
+              <Link
+                href="#especifico"
+                className={`text-md font-bold px-3 py-2 rounded-lg text-primary-700 ${
+                  activeSection === "materiales" ? "bg-primary-500" : ""
+                }`}
+              >
+                Objetivos Específicos
+              </Link>
+              <Button
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                color={"0" as any}
+                className={`${abFont.className} border-1 border-primary-600 text-black w-full lg:w-auto rounded-lg font-bold`}
+                onClick={() => {
+                  router.push("/auth/login");
+                }}
+              >
+                <GradientText
+                  colors={[
+                    "#155a75",
+                    "#67e3f9",
+                    "#155a75",
+                    "#67e3f9",
+                    "#155a75",
+                  ]}
+                  animationSpeed={3}
+                  showBorder={false}
+                  className="custom-class"
+                >
+                  Inicio de sesión
+                </GradientText>
+              </Button>
+            </div>
           </div>
         )}
       </div>
