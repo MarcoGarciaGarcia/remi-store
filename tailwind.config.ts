@@ -10,15 +10,23 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      translate: {
+        "101": "101%",
+      },
       keyframes: {
         gradient: {
           "0%": { backgroundPosition: "0% 50%" },
           "50%": { backgroundPosition: "100% 50%" },
           "100%": { backgroundPosition: "0% 50%" },
         },
+        marquee: {
+          from: { transform: "translateX(0%)" },
+          to: { transform: "translateX(-50%)" },
+        },
       },
       animation: {
         gradient: "gradient 8s linear infinite",
+        marquee: "marquee 15s linear infinite",
       },
       fontFamily: {
         sans: ["Nunito", "sans-serif"],

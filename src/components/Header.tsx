@@ -35,17 +35,26 @@ const Header: React.FC = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      const sections = ["conocenos", "beneficios", "materiales", "productos"];
+      const sections = ["inicio", "general", "especifico","tecnologias"];
       const offsets = sections.map((id) => {
         const element = document.getElementById(id);
         return element ? element.offsetTop : 0;
       });
 
       const scrollPosition = window.scrollY + window.innerHeight / 2;
+
       for (let i = 0; i < sections.length; i++) {
-        if (scrollPosition >= offsets[i] && scrollPosition < offsets[i + 1]) {
-          setActiveSection(sections[i]);
-          break;
+        if (i === sections.length - 1) {
+          // Última sección, no hay una sección siguiente para comparar
+          if (scrollPosition >= offsets[i]) {
+            setActiveSection(sections[i]);
+            break;
+          }
+        } else {
+          if (scrollPosition >= offsets[i] && scrollPosition < offsets[i + 1]) {
+            setActiveSection(sections[i]);
+            break;
+          }
         }
       }
     };
@@ -73,12 +82,11 @@ const Header: React.FC = () => {
         >
           <h3 className="font-bold text-primary-500 text-xl">RRS</h3>
         </Link>
-
         <div className="hidden md:flex space-x-3 ml-14">
           <Link
             href="#inicio"
             className={`text-md font-bold px-3 py-2 rounded-lg text-primary-700 ${
-              activeSection === "conocenos" ? "bg-primary-500" : ""
+              activeSection === "inicio" ? "bg-primary-100" : ""
             }`}
           >
             Inicio
@@ -86,7 +94,7 @@ const Header: React.FC = () => {
           <Link
             href="#general"
             className={`text-md font-bold px-3 py-2 rounded-lg text-primary-700 ${
-              activeSection === "beneficios" ? "bg-primary-500" : ""
+              activeSection === "general" ? "bg-primary-100" : ""
             }`}
           >
             Objetivo General
@@ -94,16 +102,24 @@ const Header: React.FC = () => {
           <Link
             href="#especifico"
             className={`text-md font-bold px-3 py-2 rounded-lg text-primary-700 ${
-              activeSection === "materiales" ? "bg-primary-500" : ""
+              activeSection === "especifico" ? "bg-primary-100" : ""
             }`}
           >
             Objetivos Específicos
+          </Link>
+          <Link
+            href="#tecnologias"
+            className={`text-md font-bold px-3 py-2 rounded-lg text-primary-700 ${
+              activeSection === "tecnologias" ? "bg-primary-100" : ""
+            }`}
+          >
+            Tecnologías
           </Link>
         </div>
         <Button
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           color={"0" as any}
-          className={`${abFont.className} border-1 border-primary-600 ml-96 justify-end text-black w-full lg:w-auto rounded-lg font-bold`}
+          className={`${abFont.className} lg:block hidden border-1 border-primary-600 ml-80 justify-end text-black w-full lg:w-auto rounded-lg font-bold`}
           onClick={() => {
             router.push("/auth/login");
           }}
@@ -117,17 +133,16 @@ const Header: React.FC = () => {
             Inicio de sesión
           </GradientText>
         </Button>
-        {/* Menú Hamburguesa para pantallas pequeñas */}
-        <button
-          className="md:hidden text-primary-900 mr-10 -mt-0 text-2xl"
+        <Button
+          className="text-primary-600 mr-10 -mt-0 text-2xl lg:hidden block"
           onClick={() => setIsMenuOpen(!isMenuOpen)}
         >
           ☰
-        </button>
+        </Button>
 
         {isMenuOpen && (
           <div className="md:hidden absolute top-24 right-0 bg-white w-full h-screen z-50 text-start py-4 grid">
-            <div className="grid gap-4 h-40">
+            <div className="grid gap-4 h-40 px-8">
               <Link
                 href="#inicio"
                 className={`text-md font-bold px-3 py-2 rounded-lg text-primary-700 ${
