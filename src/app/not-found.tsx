@@ -3,7 +3,6 @@ import Container from "@/components/container-component";
 import { Button } from "@nextui-org/react";
 import { ArrowLeft } from "lucide-react";
 import { NextPage } from "next";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 const NotFound: NextPage = () => {
