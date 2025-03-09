@@ -40,7 +40,7 @@ const IntroSection: React.FC = () => {
           <div
             className="lg:w-[700px] w-80 mt-12 z-0 bg-cover bg-center"
             style={{
-              backgroundImage: "url(/assets/ejemplo1.jpg)",
+              backgroundImage: "url(/ejemplo1.jpeg)",
               aspectRatio: "16/9", // Relación de aspecto 16:9
             }}
           ></div>
