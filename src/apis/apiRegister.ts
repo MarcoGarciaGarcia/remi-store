@@ -62,6 +62,12 @@ const transformDataProducts = (data: IProductoRegister) => {
   };
 };
 
+const transformDataDeleteProducts = (data: number) => {
+  return {
+    id_producto: data,
+  };
+};
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const productsRegister = async (data: any) => {
   console.log("token: " + data);
@@ -69,6 +75,27 @@ export const productsRegister = async (data: any) => {
     const transformedData = transformDataProducts(data);
     const response = await axios.post(
       `${process.env.NEXT_PUBLIC_API_URL}/newProducto`,
+      transformedData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    return response;
+  } catch (error) {
+    console.error("Error trying Register:", error);
+    throw error;
+  }
+};
+
+export const productsDelete = async (data: number) => {
+  console.log("token: " + data);
+  try {
+    const transformedData = transformDataDeleteProducts(data);
+    const response = await axios.post(
+      `${process.env.NEXT_PUBLIC_API_URL}/deleteProducto`,
       transformedData,
       {
         headers: {

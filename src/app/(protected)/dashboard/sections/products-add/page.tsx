@@ -1,5 +1,5 @@
 "use client";
-import { productsRegister } from "@/apis/apiRegister";
+import { productsDelete, productsRegister } from "@/apis/apiRegister";
 import { IProveedores } from "@/interfaces/proveedores";
 import { IProductos } from "@/schemas/productos-schema";
 import { ProductoSchema, ProductoSchemaType } from "@/schemas/products-schema";
@@ -60,6 +60,7 @@ const styles = {
 
 const DashboardPage: FC = () => {
   const [products, setProducts] = useState<IProductos>();
+  const [deleteProduct, setDeleteProduct] = useState(0);
   const [proveedoresData, setProveedores] = useState<IProveedores>();
   const {
     isOpen: isOpen1,
@@ -72,9 +73,9 @@ const DashboardPage: FC = () => {
     //onOpenChange: onOpenChange2,
   } = useDisclosure();
   const {
-    //isOpen: isOpen3,
+    isOpen: isOpen3,
     onOpen: onOpen3,
-    //onOpenChange: onOpenChange3,
+    onOpenChange: onOpenChange3,
   } = useDisclosure();
   const form = useForm<ProductoSchemaType>({
     resolver: zodResolver(ProductoSchema),
@@ -100,6 +101,26 @@ const DashboardPage: FC = () => {
     console.log(values);
     try {
       const response = await productsRegister(values);
+      console.log("Data saved successfully:", response);
+
+      if (response.status === 201) {
+        window.location.reload();
+      }
+    } catch (error) {
+      console.error("Error saving data:", error);
+      Swal.fire({
+        title: "Error",
+        text: "Un error inesperado ocurrió, verifique si el producto ya existe",
+        icon: "error",
+      });
+      form.reset();
+    } finally {
+    }
+  };
+
+  const handleDelete = async () => {
+    try {
+      const response = await productsDelete(deleteProduct);
       console.log("Data saved successfully:", response);
 
       if (response.status === 201) {
@@ -162,6 +183,11 @@ const DashboardPage: FC = () => {
 
     fetchProveedores();
   }, [isOpen1]);
+
+  const handleDeleteProduct = (id: number) => () => {
+    onOpen3();
+    setDeleteProduct(id);
+  };
 
   return (
     <section className="w-full h-auto">
@@ -374,6 +400,63 @@ const DashboardPage: FC = () => {
           )}
         </ModalContent>
       </Modal>
+      <Modal
+        isOpen={isOpen3}
+        onOpenChange={onOpenChange3}
+        backdrop="blur"
+        className="bg-white shadow-2xl rounded-xl fixed top-24 lg:h-auto h-96 p-2 lg:-mt-14 -mt-0 overflow-y-scroll"
+      >
+        <ModalContent>
+          {(onClose3) => (
+            <>
+              <ModalHeader className="flex flex-col gap-1">
+                <p className="text-lg font-normal text-secondary-900 text-center font-sans">
+                  Eliminar Producto
+                </p>
+              </ModalHeader>
+              <ModalBody>
+                <div className="w-full h-full flex justify-center items-center">
+                  <form>
+                    <p className="font-bold text-xl text-black my-4">
+                      ¿Seguro que deseas eliminar este producto?
+                    </p>
+                    <p className="font-semibold text-md text-black my-4">
+                      {products
+                        ? products.data.find(
+                            (product) => product.id_producto === deleteProduct
+                          )?.nombre_producto
+                        : ""}
+                    </p>
+                    <div className="flex justify-center items-end gap-10 mt-4">
+                      <Button
+                        variant="bordered"
+                        color={"0" as never}
+                        type="reset"
+                        onPress={onClose3}
+                        className="w-28 text-black border-2 border-black rounded-lg"
+                      >
+                        Cancelar
+                      </Button>
+                      <Button
+                        variant="solid"
+                        color={"0" as never}
+                        type="submit"
+                        className="w-28 rounded-lg text-white bg-black"
+                        onPress={() => {
+                          handleDelete();
+                        }}
+                      >
+                        Eliminar
+                      </Button>
+                    </div>
+                  </form>
+                </div>
+              </ModalBody>
+              <ModalFooter></ModalFooter>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
       <div className="grid justify-center">
         <div className="flex justify-center">
           <h1 className="text-black lg:text-4xl text-xl font-bold font-sans lg:pt-5 pt-16">
@@ -382,7 +465,10 @@ const DashboardPage: FC = () => {
         </div>
 
         <div className="flex my-5 lg:ml-60 ml-0 justify-center">
-          <Card shadow="lg" className="rounded-lg p-5 lg:ml-20 ml-0 border-none mt-3 w-full">
+          <Card
+            shadow="lg"
+            className="rounded-lg p-5 lg:ml-20 ml-0 border-none mt-3 w-full"
+          >
             <CardBody>
               <Button
                 onPress={onOpen1}
@@ -398,25 +484,39 @@ const DashboardPage: FC = () => {
               >
                 <TableHeader className="flex justify-center items-center rounded-lg">
                   <TableColumn className="bg-black rounded-s-lg">
-                    <p className="text-white text-center lg:text-[12px] text-[10px]">Producto</p>
+                    <p className="text-white text-center lg:text-[12px] text-[10px]">
+                      Producto
+                    </p>
                   </TableColumn>
                   <TableColumn className="bg-black justify-center items-center">
-                    <p className="text-white text-center lg:text-[12px] text-[10px]">Código</p>
+                    <p className="text-white text-center lg:text-[12px] text-[10px]">
+                      Código
+                    </p>
                   </TableColumn>
                   <TableColumn className="bg-black">
-                    <p className="text-white text-center lg:text-[12px] text-[10px]">Precio de compra</p>
+                    <p className="text-white text-center lg:text-[12px] text-[10px]">
+                      Precio de compra
+                    </p>
                   </TableColumn>
                   <TableColumn className="bg-black justify-center items-center">
-                    <p className="text-white text-center lg:text-[12px] text-[10px]">Precio de venta</p>
+                    <p className="text-white text-center lg:text-[12px] text-[10px]">
+                      Precio de venta
+                    </p>
                   </TableColumn>
                   <TableColumn className="bg-black">
-                    <p className="text-white text-center lg:text-[12px] text-[10px]">Stock</p>
+                    <p className="text-white text-center lg:text-[12px] text-[10px]">
+                      Stock
+                    </p>
                   </TableColumn>
                   <TableColumn className="bg-black">
-                    <p className="text-white text-center lg:text-[12px] text-[10px]">Estatus</p>
+                    <p className="text-white text-center lg:text-[12px] text-[10px]">
+                      Estatus
+                    </p>
                   </TableColumn>
                   <TableColumn className="bg-black justify-center rounded-e-lg items-center">
-                    <p className="text-white text-center lg:text-[12px] text-[10px]">.</p>
+                    <p className="text-white text-center lg:text-[12px] text-[10px]">
+                      .
+                    </p>
                   </TableColumn>
                 </TableHeader>
                 <TableBody>
@@ -440,7 +540,7 @@ const DashboardPage: FC = () => {
                         </TableCell>
                         <TableCell className="text-secondary-900 text-center lg:text-[12px] text-[10px]">
                           {product.estado === 1 ? (
-                            <p className="text-pink-500">Activo</p>
+                            <p className="text-primary-600">Activo</p>
                           ) : (
                             <p className="text-gray-300">Inactivo</p>
                           )}
@@ -451,7 +551,7 @@ const DashboardPage: FC = () => {
                               <Button variant="light">
                                 <EllipsisVertical
                                   size={20}
-                                  className="text-pink-500"
+                                  className="text-gray-400"
                                 />
                               </Button>
                             </DropdownTrigger>
@@ -467,7 +567,9 @@ const DashboardPage: FC = () => {
                                 key="delete"
                                 className="text-red-500 font-sans"
                                 color="danger"
-                                onPress={onOpen3}
+                                onPress={handleDeleteProduct(
+                                  product.id_producto
+                                )}
                               >
                                 Eliminar
                               </DropdownItem>

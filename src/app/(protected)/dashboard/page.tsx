@@ -156,11 +156,11 @@ const DashboardPage: NextPage = () => {
               className="lg:w-[800px] w-full rounded-lg"
             >
               <TableHeader className="flex justify-center items-center rounded-lg">
-                <TableColumn className="bg-pink-100 rounded-s-lg">
-                  <p className="text-black text-center">Nombre</p>
+                <TableColumn className="bg-black rounded-s-lg">
+                  <p className="text-white text-center">Nombre</p>
                 </TableColumn>
-                <TableColumn className="bg-pink-100 justify-center items-center rounded-e-lg">
-                  <p className="text-black text-center">Contacto</p>
+                <TableColumn className="bg-black justify-center items-center rounded-e-lg">
+                  <p className="text-white text-center">Contacto</p>
                 </TableColumn>
               </TableHeader>
               <TableBody>
