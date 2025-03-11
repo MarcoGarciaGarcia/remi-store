@@ -106,8 +106,8 @@ const HeaderDashboard: React.FC = () => {
               role === "1"
                 ? "Administrador"
                 : role === "2"
-                ? "Gestión"
-                : "Empleado"
+                ? "Empleado"
+                : "Gestión"
             }
             className="text-black w-60"
           />
