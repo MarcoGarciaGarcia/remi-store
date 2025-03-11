@@ -62,9 +62,10 @@ const transformDataProducts = (data: IProductoRegister) => {
   };
 };
 
-const transformDataDeleteProducts = (data: number) => {
+const transformDataDeleteProducts = (data: number, dataProveedor: number) => {
   return {
     id_producto: data,
+    id_proveedor: dataProveedor
   };
 };
 
@@ -90,12 +91,11 @@ export const productsRegister = async (data: any) => {
   }
 };
 
-export const productsDelete = async (data: number) => {
-  console.log("token: " + data);
+export const productsDelete = async (id: number, id_proveedor: number) => {
   try {
-    const transformedData = transformDataDeleteProducts(data);
+    const transformedData = transformDataDeleteProducts(id,id_proveedor);
     const response = await axios.post(
-      `${process.env.NEXT_PUBLIC_API_URL}/deleteProducto`,
+      `${process.env.NEXT_PUBLIC_API_URL}/updateProducto`,
       transformedData,
       {
         headers: {

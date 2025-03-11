@@ -61,6 +61,7 @@ const styles = {
 const DashboardPage: FC = () => {
   const [products, setProducts] = useState<IProductos>();
   const [deleteProduct, setDeleteProduct] = useState(0);
+  const [proveedorDelete, setProveedorDelete] = useState(0);
   const [proveedoresData, setProveedores] = useState<IProveedores>();
   const {
     isOpen: isOpen1,
@@ -120,7 +121,7 @@ const DashboardPage: FC = () => {
 
   const handleDelete = async () => {
     try {
-      const response = await productsDelete(deleteProduct);
+      const response = await productsDelete(deleteProduct, proveedorDelete);
       console.log("Data saved successfully:", response);
 
       if (response.status === 201) {
@@ -184,9 +185,10 @@ const DashboardPage: FC = () => {
     fetchProveedores();
   }, [isOpen1]);
 
-  const handleDeleteProduct = (id: number) => () => {
+  const handleDeleteProduct = (id: number, id_proveedor: number) => () => {
     onOpen3();
     setDeleteProduct(id);
+    setProveedorDelete(id_proveedor);
   };
 
   return (
@@ -568,7 +570,8 @@ const DashboardPage: FC = () => {
                                 className="text-red-500 font-sans"
                                 color="danger"
                                 onPress={handleDeleteProduct(
-                                  product.id_producto
+                                  product.id_producto,
+                                  product.proveedor.id_proveedor
                                 )}
                               >
                                 Eliminar

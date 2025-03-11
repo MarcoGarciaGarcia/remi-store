@@ -117,13 +117,22 @@ const DashboardPage: FC = () => {
       console.log("Data saved successfully:", response);
 
       if (response.status === 201) {
-        alert("Usuario creado");
+        Swal.fire({
+          title: "Éxito",
+          text: "Usuario Creado",
+          icon: "success",
+        });
         control._reset();
         form.reset();
       }
       form.reset();
     } catch (error) {
       console.error("Error saving data:", error);
+      Swal.fire({
+        title: "Error",
+        text: "Proceso Incorrecto",
+        icon: "error",
+      });
     } finally {
       setIsLoading(false);
     }
